@@ -69,6 +69,12 @@ class SignInForm(Form):
 class HostForm(Form):
     is_host = BooleanField()
 
+class ParkingForm(Form):
+    price= TextField('Price')
+    description = TextField('Description')
+    location = TextField('Address')
+    parkingPic= TextField('Picture of your driveway')
+
 class ResForm(Form):
     resDate = TextField(
         'Reservation Date'

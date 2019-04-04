@@ -13,36 +13,83 @@
 
         <div class="col mt-5">
             <h3 class="text-center">My Reservations</h3>
-            {{ reservations.resDate}}
+            <div class="d-flex flex-row justify-content-between">
+                {% for reservation in reservations %}
+                    <h5>{{ reservation.resDate }} </h5>
+                    <h5>{{reservation.duration}}</h5>
+                {% endfor %}
+            </div>
         </div>
 
         <div class="col d-flex flex-column align-items-center mt-5">
-            <button type="button" id='res_button' class="btn btn-primary" data-toggle="modal" data-target="#ReserveButton">Become a Host</button>
+            {% if user.is_host == True %}
+            <button type="button" id='res_button' class="btn btn-success" data-toggle="modal" data-target="#ReserveButton">Host Mode</button>
+            {% else %}
+            <button type="button" id='res_button' class="btn btn-primary" data-toggle="modal" data-target="#ReserveButton">Host Mode</button>
+            {% endif %}
             <!-- Host Modal -->
             <div class="modal fade" id="ReserveButton" tabindex="-1" role="dialog" aria-labelledby="HostModalTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="HostModalTitle">Host a parking spot</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close flex-end" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form method='POST' novalidate>
+                            <form method='POST'class='d-flex flex-column align-items-center' >
                                 {{form.hidden_tag()}}
-                                <div>Activate Host Mode {{form.is_host()}}</div>
+                                {% if user.is_host == False %}
+                                <div>Activate Host Mode {{form.is_host(value=False)}}</div>
+                                {% else %}
+                                <div>Deactivate Host Mode {{form.is_host(value=True)}}</div>
+                                {% endif %}
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
             {% if user.is_host == True %}
-            <button class="btn btn-primary mt-2">Create Parking Space</button>
+            <button class="btn btn-primary mt-2" data-toggle="modal" data-target="#ParkingSpaceButton">Create Parking Space</button>
+            <!-- Create Parking Space Modal -->
+            <div class="modal fade" id="ParkingSpaceButton" tabindex="-1" role="dialog" aria-labelledby="ParkingSpaceTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ParkingSpaceTitle">Parking Space Details</h5>
+                            <button type="button" class="close flex-end" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="" method="POST" action="/profile/{{user.username}}/createspace" novalidate>
+                                    {{ parking_form.hidden_tag()}}
+                                    {% for field in parking_form %}
+                                        {{render_field(field)}}
+                                    {% endfor %}
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-center">My Parking Spaces</h3>
+            {% for parking in parkings %}
+                <h5>{{ parking.description }}</h5>
+            {% endfor %}
+
+
+            <div></div>
             {% else %}
-            <p>False</p>
+            <p>Earn some money! Activate host mode!</p>
             {% endif %}
+        
         </div>
+    
+    </div>
 
 {% endblock %}

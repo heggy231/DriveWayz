@@ -111,23 +111,50 @@ def parking(parkingid):
             duration=form.duration.data,
             carPic=form.carPic.data,
             parking=parking_model)
+        flash('The date you selected is already booked.')
 
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
     return render_template('parkingspace.html', parking=parking_model, form=form, reservation={'resDate':'','duration':''})
 
+def handle_parking_form(form):
+    models.Parking.create_parking(
+        user=g.user._get_current_object(),
+        price = form.price.data,
+        description = form.description.data,
+        location =form.location.data,
+        parkingPic = form.parkingPic.data
+    )
+    return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 def profilepage(username):
     user = models.User.get(models.User.username == username)
+    parkings =  current_user.get_my_parkings()
     reservations = current_user.get_reservations()
-    
+
+    if reservations:
+        for reservation in reservations:
+            reservedspace = models.Parking.select().where(models.Parking.id == reservation.parking_id)
+
+    parking_form = forms.ParkingForm()
+
     form = forms.HostForm()
     if form.validate_on_submit():
         user.is_host = form.is_host.data
         user.save()
-        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
-    return render_template('user.html', user=user,form=form, reservations=reservations) 
+    return render_template('user.html', user=user,form=form, reservations=reservations, parkings=parkings, parking_form=parking_form) 
+
+@app.route('/profile/<username>/createspace', methods=['POST'])
+def createspace(username):
+    parking_form = forms.ParkingForm()
+
+    if parking_form.validate_on_submit():
+        handle_parking_form(parking_form)
+    
+    return redirect(url_for('profilepage', username=username))
+
 
 
 if __name__ == '__main__':
@@ -139,9 +166,9 @@ if __name__ == '__main__':
             fullname = 'Homer Simpson',
             password = '123',
             phoneNumber = '4151234567',
-            address = '123 Fake St.',
+            address = '256 Anzavista ave, San Francisco',
             profileImgUrl = 'http://interactive.nydailynews.com/2016/05/simpsons-quiz/img/simp1.jpg',
-            carPic = 'http://fcauthority.com/wp-content/uploads/2017/01/Homers-Car-700x340.jpg',
+            carPic = 'https://vignette.wikia.nocookie.net/simpsons/images/8/8a/PinkSedan.png/revision/latest?cb=20180804000113',
             is_host = False
             )
         models.User.create_user(
@@ -150,30 +177,30 @@ if __name__ == '__main__':
             fullname = 'Ned Flanders',
             password = '123',
             phoneNumber = '4151234567',
-            address = 'Evergreen Terrace, Springfield',
+            address = '573 8th ave, san francisco 94115',
             profileImgUrl = 'https://i.imgflip.com/acs9p.jpg',
-            carPic = 'http://fcauthority.com/wp-content/uploads/2017/01/Homers-Car-700x340.jpg',
+            carPic = 'https://vignette.wikia.nocookie.net/simpsons/images/c/ca/NedsGeo.png/revision/latest?cb=20091222195711',
             is_host = False
             )
         models.Parking.create_parking(
             user = 1,
             price = '$25',
             description = 'OK parking space',
-            location = 'Evergreen terrace, springfield',
+            location = '225 bush st san francisco',
             parkingPic = 'https://images.unsplash.com/14/unsplash_5243e9ef164a5_1.JPG?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
         )
         models.Parking.create_parking(
             user = 2,
             price = '$10',
             description = 'Friendly neighbors parking space',
-            location = 'Evergreen terrace, springfield',
+            location = 'ocean beach san francisco',
             parkingPic = 'https://images.unsplash.com/photo-1465301055284-72f355cfd745?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
         )
         models.Parking.create_parking(
             user = 2,
             price = '$15',
             description = 'Safe parking space',
-            location = 'Sketchy St, springfield',
+            location = 'sunset san francisco',
             parkingPic = 'https://images.unsplash.com/photo-1527377667-83c6c76f963f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
         )
 

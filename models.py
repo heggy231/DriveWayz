@@ -42,6 +42,8 @@ class User(UserMixin, Model):
     def get_reservations(self):
         return Reservation.select().where(Reservation.user == self)
 
+    def get_my_parkings(self):
+        return Parking.select().where(Parking.user == self)
 
 class Parking(Model):
     user = ForeignKeyField(
