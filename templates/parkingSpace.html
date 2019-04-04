@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div id='parking_page_div'class="d-flex flex-row justify-content-between">
+    <div id='parking_post_div' class="d-flex flex-column col align-items-center">
+            <img src= {{parking.parkingPic}}/>
+            <div>{{parking.description}}</div>
+            <div>{{parking.location}}</div>
+            <div>{{parking.price}}</div>
+    </div>
+
+    <div id="#" class="pr-3">
+            <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{parking.location}}&key=AIzaSyAVi2f6ymqCncDvu6tMlbsFGPq-kVK5WGE" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div id='reserve_form' class="d-inline-block">
+    <h3>Reserve this driveway</h3>
+    <form class="" method="POST" action="" novalidate>
+            {{ form.hidden_tag()}}
+
+            {% for field in form %}
+                {{render_field(field)}}
+            {% endfor %}
+        <button type="submit" class="btn btn-primary">Reserve</button>
+
+    </form>
+</div>
+
+
+{% endblock %}
+

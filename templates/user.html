@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column align-items-center col mt-5" id="profile-div">
+            <img id="profile_img" src={{user.profileImgUrl}} />
+            <img class='mt-3' width="200" height="150" src={{user.carPic}}/>
+            <h5>{{ user.fullname }}</h5>
+            <h5>{{ user.username }}</h5>
+            <h5>{{ user.email }}</h5>
+        </div>
+
+        <div class="col mt-5">
+            <h3 class="text-center">My Reservations</h3>
+            {{ reservations.resDate}}
+        </div>
+
+        <div class="col d-flex flex-column align-items-center mt-5">
+            <button type="button" id='res_button' class="btn btn-primary" data-toggle="modal" data-target="#ReserveButton">Become a Host</button>
+            <!-- Host Modal -->
+            <div class="modal fade" id="ReserveButton" tabindex="-1" role="dialog" aria-labelledby="HostModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="HostModalTitle">Host a parking spot</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method='POST' novalidate>
+                                {{form.hidden_tag()}}
+                                <div>Activate Host Mode {{form.is_host()}}</div>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if user.is_host == True %}
+            <button class="btn btn-primary mt-2">Create Parking Space</button>
+            {% else %}
+            <p>False</p>
+            {% endif %}
+        </div>
+
+{% endblock %}

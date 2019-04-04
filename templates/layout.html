@@ -9,74 +9,87 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
     <title>AirPnP</title>
 </head>
 <body>
-    <div class="splashwrap">
-        <header class="headerwrap">
-            <h1>AirPnP</h1>
-            <h3>Reserve a driveway today</h3>
-        </header>
+    {% if not current_user.is_authenticated %}
+    <section id="landingpage">
+        <div class="dark-overlay">
+                <header class="headerwrap py-5">
+                    <h1>AirPnP</h1>
+                    <h3>Reserve a driveway today</h3>
+                </header>
 
-        <div id="modalwrap">
-            <div id="error_message">
-                    {% with messages = get_flashed_messages(with_categories=True) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class={{category}}>{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-            </div>
-
-            <!-- Button trigger Log in Modal -->
-            {% if current_user.is_authenticated %}
-                <a id="anchor"><h3>Hello {{current_user.username}}</h3></a>
-                <!-- signout button -->
-                <a href="{{url_for('logout')}}"><button class="btn btn-dark">Sign Out</button></a>
-            {% else %}
-
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LogInButton">Log In</button>
-            <!-- Log in Modal -->
-            <div class="modal fade" id="LogInButton" tabindex="-1" role="dialog" aria-labelledby="LogInModalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="LogInModalTitle">Log In</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                <div id="modalwrap">
+                    <!-- Button trigger Log in Modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LogInButton">Log In</button>
+                    <!-- Log in Modal -->
+                    <div class="modal fade" id="LogInButton" tabindex="-1" role="dialog" aria-labelledby="LogInModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="LogInModalTitle">Log In</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {% block login %}
+                                    {% endblock %}
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            {% block login %}
-                            {% endblock %}
+                    </div>
+
+                    <!-- Button trigger Sign Up Modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SignUpButton">Sign Up</button>
+                    <!-- Sign Up Modal -->
+                    <div class="modal fade" id="SignUpButton" tabindex="-1" role="dialog" aria-labelledby="SignUpModalTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="SignUpModalTitle">Sign Up</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    {% block signup %}
+                                    {% endblock %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+    </section>
+    {% endif %}
 
-            <!-- Button trigger Sign Up Modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SignUpButton">Sign Up</button>
-            <!-- Sign Up Modal -->
-            <div class="modal fade" id="SignUpButton" tabindex="-1" role="dialog" aria-labelledby="SignUpModalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="SignUpModalTitle">Sign Up</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            {% block signup %}
-                            {% endblock %}
-                        </div>
-                    </div>
-                </div>
+    {% if current_user.is_authenticated %}
+    <!-------------- NAVBAR ------------------->
+        <div class="d-flex justify-content-between" id="navbar">
+            <div class="d-flex justify-content-start">
+                <img id="logo" src={{url_for("static", filename="Logo.png")}}>
+                <a id="#" href="{{ url_for('index') }}"><h3>AirPnP</h3></a>
+                <h3>Welcome</h3>
             </div>
-            {% endif %}
-        </div>
-    </div>
+            <nav id="#">
+                <div class="d-flex justify-content-end">
+                    {% if current_user.is_authenticated %}
+                        <a id="#" href={{url_for('profilepage', username=current_user.username)}}><h3>Hello {{current_user.username}}</h3></a>
+                        <a id="#" href={{url_for('profilepage', username=current_user.username)}}><img id="navPic" src={{current_user.profileImgUrl}} /></a>
+                        <a href="{{url_for('logout')}}"><button class="btn btn-dark" id="signoutButton">Sign Out</button></a>
+                    {% endif %}
+                </div> 
+            </nav> 
+        </div> 
+        
+    {% block content %}
+    {% endblock %}
+
+    {% endif %}
+
 </body>
 </html>

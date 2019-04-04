@@ -23,3 +23,16 @@
         <button type="submit" class="btn btn-dark" id="submit">Register!</button>
     </form>
 {% endblock %}
+
+{% block content %}
+<h3 class='pl-3 pt-2'>Find a driveway to park in!</h3>
+<div id="parking_space_list" class="row">
+    {% for parking in parkings %}
+        <div id = 'parking_spaces_div' class="d-flex flex-column col align-items-center">
+            <a href={{url_for('parking', parkingid=parking.id)}}><img id = 'parking_pic' src= {{parking.parkingPic}}/></a>
+            <div>{{parking.description}}</div>
+            <div>{{parking.location}}</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

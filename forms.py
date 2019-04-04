@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm as Form
 from models import User
 from models import Parking
 from models import Reservation
-from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField, IntegerField, DateField
+from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField, IntegerField, DateField, BooleanField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email, Length, EqualTo)
 
 def name_exists(form, field):
@@ -60,24 +60,23 @@ class SignUpForm(Form):
     profileImgUrl = StringField("Profile Image")
     carPic = StringField(
         "Car Image",
-        # validators=[DataRequired()]
     )
 
 class SignInForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
 
+class HostForm(Form):
+    is_host = BooleanField()
 
 class ResForm(Form):
-    date = DateField(
-        'Reservation Date',
-        validators=[DataRequired()]
+    resDate = TextField(
+        'Reservation Date'
     )
-    duration = IntegerField(
-        'Duration',
-        validators=[DataRequired()]
+    duration = TextField(
+        'Duration'
     )
-    submit = SubmitField('Create Reservation')
+    carPic = TextField('Picture of your Car')
 
 class Review(Form):
     reviewText = TextAreaField()

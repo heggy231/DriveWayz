@@ -23,7 +23,7 @@ class User(UserMixin, Model):
         order_by = ('-joined_at',)
         
     @classmethod
-    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl, carPic, host=False):
+    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl, carPic, is_host=False):
         try:
             cls.create(
                 username=username,
@@ -32,15 +32,16 @@ class User(UserMixin, Model):
                 fullname = fullname,
                 phoneNumber = phoneNumber,
                 address = address,
-                is_host=host,
+                is_host= is_host,
                 profileImgUrl=profileImgUrl,
                 carPic = carPic
             )
         except IntegrityError:
             raise ValueError("User already exists")
 
-    # def get_parking(self):
-    #     return Parking.select().where(Parking.user == self)
+    def get_reservations(self):
+        return Reservation.select().where(Reservation.user == self)
+
 
 class Parking(Model):
     user = ForeignKeyField(
@@ -67,7 +68,7 @@ class Parking(Model):
                 parkingPic = parkingPic
             )
         except IntegrityError:
-            raise ValueError("Parking space already error")
+            raise ValueError("Parking space already exist error")
 
     @classmethod
     def delete_parking(cls, parking_id):
@@ -78,24 +79,39 @@ class Parking(Model):
             raise ValueError("No parking space exist")
         return 
 
-    @classmethod
-    def get_reservations(self):
-        return Reservation.select().where(Reservation.parking == self)
+    # @classmethod
+    # def get_reservations(self):
+    #     return Reservation.select().where(Reservation.parking == self)
 
 class Reservation(Model):
     parking = ForeignKeyField(
         model = Parking,
         backref='reservations'
     )
-    resDate = DateField,
-    duartion = CharField
+    user = ForeignKeyField(
+        model=User,
+        backref='reservations'
+    )
+    resDate = CharField(unique=True)
+    duration = CharField()
+    carPic = CharField()
 
     class Meta:
         database = DATABASE
         order_by = ('-parking',)
 
-    # @classmethod
-    # def create_res
+    @classmethod
+    def create_res(cls, user, parking, resDate, duration, carPic):
+        try:
+            cls.create(
+                user = user,
+                parking = parking,
+                resDate = resDate,
+                duration = duration,
+                carPic = carPic
+            )
+        except IntegrityError:
+            raise ValueError("Reservation already exist error")
 
     # @classmethod
     # def delete_res
@@ -120,4 +136,4 @@ class Review(Model):
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Parking, Reservation, Review], safe=True)
-    DATABASE.close()       
+    DATABASE.close()
