@@ -104,7 +104,7 @@
     min-height: 300px;
 }
 
-#review_content{
+#content_cutoff{
     white-space: nowrap; 
     width: 150px; 
     overflow: hidden;

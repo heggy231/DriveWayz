@@ -117,6 +117,7 @@ def parking(parkingid):
 def profilepage(username):
     user = models.User.get(models.User.username == username)
     parkings =  current_user.get_my_parkings()
+    parking =  current_user.get_my_parkings()
     reservations = current_user.get_reservations()
     parking_form = forms.ParkingForm()
     reviews = current_user.get_my_reviews()
@@ -126,7 +127,7 @@ def profilepage(username):
         user.is_host = form.is_host.data
         user.save()
 
-    return render_template('user.html', user=user,form=form, reservations=reservations, parkings=parkings, parking_form=parking_form, reviews=reviews) 
+    return render_template('user.html', user=user,form=form, reservations=reservations, parking=parking,parkings=parkings, parking_form=parking_form, reviews=reviews) 
 
 @app.route('/profile/<resid>/delete')
 @login_required 

@@ -16,6 +16,9 @@
 </div>
 
 <div class="d-flex flex-row justify-content-around">
+    {% if current_user.id == parking.user_id %}
+    <h5 class="mt-5">You own this parking space</h5>
+    {% else %}
     <div id='reserve_form' class="d-inline-block">
         <h3>Reserve this driveway</h3>
         <form class="" method="POST" action="" novalidate>
@@ -26,10 +29,14 @@
             <button type="submit" class="btn btn-primary">Reserve</button>
         </form>
     </div>
+    {% endif %}
     <div id="reviews_div">
         <h3>Reviews</h3>
         {% for review in reviews %}
-            <div>{{ review.content }}</div> {{review.user.username}}
+            <div id="card_div">
+                <div>{{ review.content }}</div> 
+                By:{{review.user.username}}
+            </div>
         {% endfor %}
 
         <form class="" method="POST" action="/parking/{{parking.id}}/createreview" novalidate>

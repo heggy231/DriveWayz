@@ -16,7 +16,7 @@
                 <h4 class="text-center">My Reservations</h4>
                 {% for reservation in reservations %}
                     <div class="d-flex flex-row justify-content-around" id="card_div">
-                        <a class="mt-3" href={{url_for('parking', parkingid=reservation.parking_id )}}>{{reservation.parking.description}}</a>
+                        <a class="mt-3" href={{url_for('parking', parkingid=reservation.parking_id )}}><p id="content_cutoff">{{reservation.parking.description}}</p></a>
                         <p class="mt-3">{{ reservation.resDate }} </p>
                         <p class="mt-3">{{ reservation.duration }} </p>
                         <a href={{url_for('edit_res', resid=reservation.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
@@ -28,14 +28,14 @@
             
             <div id="">
                 <h4 class="text-center">My Reviews</h4>
-                    {% for review in reviews %}
+                {% for review in reviews %}
                     <div class="d-flex flex-row justify-content-around" id="card_div">
-                        <a id="review_content" class="mt-3" href={{url_for('parking', parkingid=review.parking_id )}}><p>{{review.content}}</p></a>
+                        <a class="mt-3" href={{url_for('parking', parkingid=review.parking_id )}}><p id="content_cutoff">{{review.content}}</p></a>
                         <p class="mt-3">{{ review.review_date }}</p>
                         <a href={{url_for('edit_rev', revid=review.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
                         <a href={{url_for('delete_rev', revid=review.id)}}><button class="btn btn-danger mt-2" id="submitButton">Delete</button></a>
-                    {% endfor %}
                     </div>
+                {% endfor %}
             </div>
         </div>
 

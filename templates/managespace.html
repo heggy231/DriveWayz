@@ -26,6 +26,7 @@
         {% for space_reservation in space_reservations %}
             <div id='card_div' class="d-flex flex-row justify-content-between p-2">
                 <img class='mr-2' height="50" width="50" src ="{{ space_reservation.user.profileImgUrl }}"/>
+                <img class='mr-2' height="50" width="50" src ="{{ space_reservation.user.carPic }}"/>                
                 {{ space_reservation.user.username }}
                 {{ space_reservation.parking.description }}
                 {{ space_reservation.resDate }}
