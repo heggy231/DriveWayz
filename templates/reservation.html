@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+
+<div id='#' class="d-inline-block">
+    <h3>Edit Your Reservation</h3>
+    <form class="d-flex flex-column" method="POST" action="" novalidate>
+            {{ form.hidden_tag()}}
+            {{ form.resDate.label}}
+            {{ form.resDate ( value=reservation.resDate ) }}
+            {{ form.duration.label}}
+            {{ form.duration ( value=reservation.duration ) }}
+            {{ form.carPic.label}}
+            {{ form.carPic ( value=reservation.carPic ) }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+
+{% endblock %}

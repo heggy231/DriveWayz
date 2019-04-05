@@ -119,20 +119,33 @@ class Reservation(Model):
     # def delete_res
 
 class Review(Model):
-    reservation = ForeignKeyField(
-        model = Reservation,
+    parking = ForeignKeyField(
+        model = Parking,
         backref = 'reviews'
     )
     user = ForeignKeyField(
         model=User,
         backref='reviews'
     )
-    review_date = DateField()
+    review_date = DateField(default=datetime.datetime.now())
     content = TextField()
 
     class Meta:
         database = DATABASE
         order_by = ('-review_date',)
+
+    @classmethod
+    def create_review(cls, parking,user, content):
+        try:
+            cls.create(
+                parking = parking,
+                user = user,
+                content = content
+            )
+        except IntegrityError:
+            raise ValueError("Review error")
+
+
 
 
 def initialize():

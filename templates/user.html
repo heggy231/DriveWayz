@@ -5,7 +5,7 @@
     <div class="d-flex flex-row">
         <div class="d-flex flex-column align-items-center col mt-5" id="profile-div">
             <img id="profile_img" src={{user.profileImgUrl}} />
-            <img class='mt-3' width="200" height="150" src={{user.carPic}}/>
+            <img class='mt-3' width="25%" src={{user.carPic}}/>
             <h5>{{ user.fullname }}</h5>
             <h5>{{ user.username }}</h5>
             <h5>{{ user.email }}</h5>
@@ -13,12 +13,18 @@
 
         <div class="col mt-5">
             <h3 class="text-center">My Reservations</h3>
-            <div class="d-flex flex-row justify-content-between">
-                {% for reservation in reservations %}
-                    <h5>{{ reservation.resDate }} </h5>
-                    <h5>{{reservation.duration}}</h5>
-                {% endfor %}
-            </div>
+            {% for reservation in reservations %}
+                <div class="d-flex flex-row justify-content-around">
+                    <div> Dates
+                        <a href={{url_for('parking', parkingid=reservation.parking_id )}}><h5>{{ reservation.resDate }} </h5></a>
+                    </div>
+                    <div>Duration
+                        <h5>{{ reservation.duration }} </h5>
+                    </div>
+                    <a href={{url_for('edit_res', resid=reservation.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
+                    <a href={{url_for('delete_res', resid=reservation.id)}}><button class="btn btn-danger mt-2" id="submitButton">Delete</button></a>
+                </div>
+            {% endfor %}
         </div>
 
         <div class="col d-flex flex-column align-items-center mt-5">
@@ -77,8 +83,9 @@
                 </div>
             </div>
 
-            <h3 class="text-center">My Parking Spaces</h3>
+            <h4 class="text-center"> Manage My Parking Spaces</h4>
             {% for parking in parkings %}
+                <img width="50%" src ={{ parking.parkingPic }}/>
                 <h5>{{ parking.description }}</h5>
             {% endfor %}
 

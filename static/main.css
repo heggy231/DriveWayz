@@ -53,10 +53,18 @@
     margin-top: 3px;
 }
 
-#navPic, #logo{
+#navPic {
+    width: 100%;
+}
+
+#navPic_div{
+    width:40px;
+    margin:3px;
+}
+
+#logo{
     width:50px;
-    height:40px;
-    margin: 3px;
+    height: 40px;
 }
 
 #parking_pic{
@@ -74,8 +82,9 @@
     height: 100%;
 }
 
-#reserve_form{
-    margin:80px 0 0 20px;
+#reserve_form, #reviews_div{
+    margin-top:80px;
+    width: 600px;
 }
 
 #profile_div{
@@ -83,6 +92,6 @@
 }
 
 #profile_img{
-    width: 200px;
-    height: 150px;
+    width: 50%;
 }
+

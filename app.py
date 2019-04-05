@@ -102,6 +102,7 @@ def logout():
 @app.route('/parking/<parkingid>', methods=['GET','POST'])
 def parking(parkingid):
     parking_model = models.Parking.get_by_id(int(parkingid))
+    reviews = models.Review.select().where(models.Review.parking_id==int(parkingid))
 
     form = forms.ResForm()
     if form.validate_on_submit():
@@ -115,7 +116,7 @@ def parking(parkingid):
 
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
-    return render_template('parkingspace.html', parking=parking_model, form=form, reservation={'resDate':'','duration':''})
+    return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, reservation={'resDate':'','duration':''})
 
 def handle_parking_form(form):
     models.Parking.create_parking(
@@ -132,11 +133,6 @@ def profilepage(username):
     user = models.User.get(models.User.username == username)
     parkings =  current_user.get_my_parkings()
     reservations = current_user.get_reservations()
-
-    if reservations:
-        for reservation in reservations:
-            reservedspace = models.Parking.select().where(models.Parking.id == reservation.parking_id)
-
     parking_form = forms.ParkingForm()
 
     form = forms.HostForm()
@@ -155,6 +151,27 @@ def createspace(username):
     
     return redirect(url_for('profilepage', username=username))
 
+@app.route('/profile/<resid>/delete')
+@login_required 
+def delete_res(resid):
+    reservation = models.Reservation.get(models.Reservation.id == resid)
+    reservation.delete_instance()
+
+    return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+@app.route('/reservation/<resid>/edit', methods=['GET','POST'])
+def edit_res(resid):
+    reservation = models.Reservation.get(models.Reservation.id == resid)
+    
+    form = forms.ResForm()
+    if form.validate_on_submit():
+        reservation.resDate = form.resDate.data
+        reservation.duration = form.duration.data
+        reservation.carPic = form.carPic.data
+        reservation.save()
+        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+    return render_template('reservation.html', form=form, reservation=reservation)
 
 
 if __name__ == '__main__':
@@ -203,13 +220,17 @@ if __name__ == '__main__':
             location = 'sunset san francisco',
             parkingPic = 'https://images.unsplash.com/photo-1527377667-83c6c76f963f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
         )
-
         models.Reservation.create_res(
             user = 2,
             parking = 1,
             resDate = '5-5-19',
             duration = '1 day',
             carPic = 'http://fcauthority.com/wp-content/uploads/2017/01/Homers-Car-700x340.jpg'
+        )
+        models.Review.create_review(
+            parking = 1,
+            user = 2,
+            content = 'Host were very pleasent'
         )
 
     except ValueError:
