@@ -45,6 +45,10 @@ class User(UserMixin, Model):
     def get_my_parkings(self):
         return Parking.select().where(Parking.user == self)
 
+    def get_my_reviews(self):
+        return Review.select().where(Review.user == self)
+
+
 class Parking(Model):
     user = ForeignKeyField(
         model=User,
@@ -81,9 +85,6 @@ class Parking(Model):
             raise ValueError("No parking space exist")
         return 
 
-    # @classmethod
-    # def get_reservations(self):
-    #     return Reservation.select().where(Reservation.parking == self)
 
 class Reservation(Model):
     parking = ForeignKeyField(
@@ -144,9 +145,6 @@ class Review(Model):
             )
         except IntegrityError:
             raise ValueError("Review error")
-
-
-
 
 def initialize():
     DATABASE.connect()

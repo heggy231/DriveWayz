@@ -50,8 +50,8 @@ def handle_signup(form):
         profileImgUrl=form.profileImgUrl.data,
         carPic=form.carPic.data,
         )
-    db.session.add(user)
-    db.session.commit()
+    g.db.session.add(user)
+    g.db.session.commit()
     session['email'] = user.email 
 
     return redirect(url_for('index'))
@@ -92,17 +92,11 @@ def logout():
     return redirect(url_for('index'))
 
 
-# @app.route('/homepage', methods=['GET'])
-# @login_required
-# def homepage():
-#     parkings = models.Parking.select()
-    
-#     return render_template('homepage.html', parkings=parkings )
-
 @app.route('/parking/<parkingid>', methods=['GET','POST'])
 def parking(parkingid):
     parking_model = models.Parking.get_by_id(int(parkingid))
     reviews = models.Review.select().where(models.Review.parking_id==int(parkingid))
+    review_form = forms.ReviewForm()
 
     form = forms.ResForm()
     if form.validate_on_submit():
@@ -116,17 +110,8 @@ def parking(parkingid):
 
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
-    return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, reservation={'resDate':'','duration':''})
+    return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, review_form=review_form, reservation={'resDate':'','duration':''})
 
-def handle_parking_form(form):
-    models.Parking.create_parking(
-        user=g.user._get_current_object(),
-        price = form.price.data,
-        description = form.description.data,
-        location =form.location.data,
-        parkingPic = form.parkingPic.data
-    )
-    return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 def profilepage(username):
@@ -134,22 +119,14 @@ def profilepage(username):
     parkings =  current_user.get_my_parkings()
     reservations = current_user.get_reservations()
     parking_form = forms.ParkingForm()
+    reviews = current_user.get_my_reviews()
 
     form = forms.HostForm()
     if form.validate_on_submit():
         user.is_host = form.is_host.data
         user.save()
 
-    return render_template('user.html', user=user,form=form, reservations=reservations, parkings=parkings, parking_form=parking_form) 
-
-@app.route('/profile/<username>/createspace', methods=['POST'])
-def createspace(username):
-    parking_form = forms.ParkingForm()
-
-    if parking_form.validate_on_submit():
-        handle_parking_form(parking_form)
-    
-    return redirect(url_for('profilepage', username=username))
+    return render_template('user.html', user=user,form=form, reservations=reservations, parkings=parkings, parking_form=parking_form, reviews=reviews) 
 
 @app.route('/profile/<resid>/delete')
 @login_required 
@@ -172,6 +149,71 @@ def edit_res(resid):
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
     return render_template('reservation.html', form=form, reservation=reservation)
+
+@app.route('/profile/<username>/createspace', methods=['POST'])
+def createspace(username):
+    form = forms.ParkingForm()
+    if form.validate_on_submit():
+        models.Parking.create_parking(
+            user=g.user._get_current_object(),
+            price = form.price.data,
+            description = form.description.data,
+            location =form.location.data,
+            parkingPic = form.parkingPic.data
+        )
+    return redirect(url_for('profilepage', username=username))
+
+@app.route('/profile/<parkingid>/managespace', methods=['GET','POST'])
+def managespace(parkingid):
+    parking = models.Parking.get(models.Parking.id == parkingid)
+    space_reservations = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
+
+    form=forms.ParkingForm()
+    if form.validate_on_submit():
+        parking.price = form.price.data
+        parking.description = form.description.data
+        parking.location = form.location.data
+        parking.parkingPic = form.parkingPic.data
+        parking.save()
+        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+    return render_template('managespace.html', form=form, parking=parking, space_reservations=space_reservations)
+
+@app.route('/parking/<parkingid>/createreview', methods=['POST'])
+def createreview(parkingid):
+    parking = models.Parking.get(models.Parking.id == parkingid)
+    review_form = forms.ReviewForm()
+
+    if review_form.validate_on_submit():
+        models.Review.create(
+            user=g.user._get_current_object(),
+            content = review_form.content.data,
+            parking = parking
+        )
+
+    return redirect('/parking/{}'.format(parkingid))
+
+@app.route('/profile/review/<revid>/delete')
+@login_required 
+def delete_rev(revid):
+    review = models.Review.get(models.Review.id == revid)
+    review.delete_instance()
+
+    return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+@app.route('/review/<revid>/edit', methods=['GET','POST'])
+def edit_rev(revid):
+    review = models.Review.get(models.Review.id == revid)
+    
+    form = forms.ReviewForm()
+    if form.validate_on_submit():
+        review.content = form.content.data
+        review.save()
+        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+    return render_template('review.html', form=form, review=review)
+
+
 
 
 if __name__ == '__main__':
@@ -232,6 +274,12 @@ if __name__ == '__main__':
             user = 2,
             content = 'Host were very pleasent'
         )
+        models.Review.create_review(
+            parking = 2,
+            user = 1,
+            content = 'Nice place.'
+        )
+
 
     except ValueError:
         pass

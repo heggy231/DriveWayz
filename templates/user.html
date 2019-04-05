@@ -3,8 +3,8 @@
 
 {% block content %}
     <div class="d-flex flex-row">
-        <div class="d-flex flex-column align-items-center col mt-5" id="profile-div">
-            <img id="profile_img" src={{user.profileImgUrl}} />
+        <div class="d-flex flex-column align-items-center col mt-5 ml-2" id="profile_div">
+            <img class="mt-3" id="profile_img" src={{user.profileImgUrl}} />
             <img class='mt-3' width="25%" src={{user.carPic}}/>
             <h5>{{ user.fullname }}</h5>
             <h5>{{ user.username }}</h5>
@@ -12,19 +12,31 @@
         </div>
 
         <div class="col mt-5">
-            <h3 class="text-center">My Reservations</h3>
-            {% for reservation in reservations %}
-                <div class="d-flex flex-row justify-content-around">
-                    <div> Dates
-                        <a href={{url_for('parking', parkingid=reservation.parking_id )}}><h5>{{ reservation.resDate }} </h5></a>
+            <div id="reservation_block">
+                <h4 class="text-center">My Reservations</h4>
+                {% for reservation in reservations %}
+                    <div class="d-flex flex-row justify-content-around" id="card_div">
+                        <a class="mt-3" href={{url_for('parking', parkingid=reservation.parking_id )}}>{{reservation.parking.description}}</a>
+                        <p class="mt-3">{{ reservation.resDate }} </p>
+                        <p class="mt-3">{{ reservation.duration }} </p>
+                        <a href={{url_for('edit_res', resid=reservation.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
+                        <a href={{url_for('delete_res', resid=reservation.id)}}><button class="btn btn-danger mt-2" id="submitButton">Delete</button></a>
                     </div>
-                    <div>Duration
-                        <h5>{{ reservation.duration }} </h5>
+                {% endfor %}
+            </div>
+
+            
+            <div id="">
+                <h4 class="text-center">My Reviews</h4>
+                    {% for review in reviews %}
+                    <div class="d-flex flex-row justify-content-around" id="card_div">
+                        <a id="review_content" class="mt-3" href={{url_for('parking', parkingid=review.parking_id )}}><p>{{review.content}}</p></a>
+                        <p class="mt-3">{{ review.review_date }}</p>
+                        <a href={{url_for('edit_rev', revid=review.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
+                        <a href={{url_for('delete_rev', revid=review.id)}}><button class="btn btn-danger mt-2" id="submitButton">Delete</button></a>
+                    {% endfor %}
                     </div>
-                    <a href={{url_for('edit_res', resid=reservation.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
-                    <a href={{url_for('delete_res', resid=reservation.id)}}><button class="btn btn-danger mt-2" id="submitButton">Delete</button></a>
-                </div>
-            {% endfor %}
+            </div>
         </div>
 
         <div class="col d-flex flex-column align-items-center mt-5">
@@ -83,14 +95,15 @@
                 </div>
             </div>
 
-            <h4 class="text-center"> Manage My Parking Spaces</h4>
-            {% for parking in parkings %}
-                <img width="50%" src ={{ parking.parkingPic }}/>
-                <h5>{{ parking.description }}</h5>
-            {% endfor %}
+            <div class="d-flex flex-column align-items-center">
+                <h4 class="text-center"> Manage My Parking Spaces</h4>
+                {% for parking in parkings %}
+                    <a class="d-flex flex-column align-items-center" href={{url_for('managespace', parkingid=parking.id)}}><img width="50%" src ={{ parking.parkingPic }}/></a>
+                    <h5>{{ parking.description }}</h5>
+                {% endfor %}
+            </div>
 
 
-            <div></div>
             {% else %}
             <p>Earn some money! Activate host mode!</p>
             {% endif %}

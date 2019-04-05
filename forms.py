@@ -84,6 +84,5 @@ class ResForm(Form):
     )
     carPic = TextField('Picture of your Car')
 
-class Review(Form):
-    reviewText = TextAreaField()
-    submit = SubmitField('Create Review')
+class ReviewForm(Form):
+    content = TextField()
