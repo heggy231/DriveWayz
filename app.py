@@ -50,9 +50,9 @@ def handle_signup(form):
         profileImgUrl=form.profileImgUrl.data,
         carPic=form.carPic.data,
         )
-    g.db.session.add(user)
-    g.db.session.commit()
-    session['email'] = user.email 
+    # g.db.session.add(user)
+    # g.db.session.commit()
+    # session['email'] = user.email 
 
     return redirect(url_for('index'))
 
@@ -121,13 +121,15 @@ def profilepage(username):
     reservations = current_user.get_reservations()
     parking_form = forms.ParkingForm()
     reviews = current_user.get_my_reviews()
+    profileImgUrl = url_for('static', filename='profile_pics/' + current_user.profileImgUrl)
+    carPic = url_for('static', filename='profile_pics/' + current_user.carPic)
 
     form = forms.HostForm()
     if form.validate_on_submit():
         user.is_host = form.is_host.data
         user.save()
 
-    return render_template('user.html', user=user,form=form, reservations=reservations, parking=parking,parkings=parkings, parking_form=parking_form, reviews=reviews) 
+    return render_template('user.html', user=user,form=form, reservations=reservations, parking=parking,parkings=parkings, parking_form=parking_form, reviews=reviews, profileImgUrl=profileImgUrl, carPic=carPic) 
 
 @app.route('/profile/<resid>/delete')
 @login_required 
@@ -162,9 +164,10 @@ def createspace(username):
             location =form.location.data,
             parkingPic = form.parkingPic.data
         )
-    return redirect(url_for('profilepage', username=username))
+    return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
 @app.route('/profile/<parkingid>/managespace', methods=['GET','POST'])
+@login_required
 def managespace(parkingid):
     parking = models.Parking.get(models.Parking.id == parkingid)
     space_reservations = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
@@ -180,7 +183,26 @@ def managespace(parkingid):
 
     return render_template('managespace.html', form=form, parking=parking, space_reservations=space_reservations)
 
+@app.route('/editprofile/', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+
+    form=forms.UpdateProfile()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        current_user.fullname = form.fullname.data
+        current_user.phoneNumber = form.phoneNumber.data
+        current_user.address = form.address.data
+        current_user.profileImgUrl = form.profileImgUrl.data
+        current_user.carPic = form.carPic.data
+        current_user.save()
+        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+
+    return render_template('editprofile.html', form=form)
+
 @app.route('/parking/<parkingid>/createreview', methods=['POST'])
+@login_required
 def createreview(parkingid):
     parking = models.Parking.get(models.Parking.id == parkingid)
     review_form = forms.ReviewForm()
@@ -203,6 +225,7 @@ def delete_rev(revid):
     return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
 @app.route('/review/<revid>/edit', methods=['GET','POST'])
+@login_required
 def edit_rev(revid):
     review = models.Review.get(models.Review.id == revid)
     
@@ -216,7 +239,6 @@ def edit_rev(revid):
 
 
 
-
 if __name__ == '__main__':
     models.initialize()
     try:
@@ -227,8 +249,8 @@ if __name__ == '__main__':
             password = '123',
             phoneNumber = '4151234567',
             address = '256 Anzavista ave, San Francisco',
-            profileImgUrl = 'http://interactive.nydailynews.com/2016/05/simpsons-quiz/img/simp1.jpg',
-            carPic = 'https://vignette.wikia.nocookie.net/simpsons/images/8/8a/PinkSedan.png/revision/latest?cb=20180804000113',
+            profileImgUrl = '',
+            carPic = '',
             is_host = False
             )
         models.User.create_user(

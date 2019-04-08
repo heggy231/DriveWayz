@@ -58,9 +58,29 @@ class SignUpForm(Form):
         validators=[DataRequired()]
     )
     profileImgUrl = StringField("Profile Image")
-    carPic = StringField(
-        "Car Image",
+    carPic = StringField("Car Image")
+
+class UpdateProfile(Form):
+    username = StringField('Username')
+    email = StringField('Email')
+    fullname= StringField(
+        'Full Name',
+        validators=[
+            DataRequired(),
+            Length(min=2),
+        ]
     )
+    phoneNumber = StringField(
+        'Phone Number',
+        validators=[DataRequired()]
+    )
+    address = StringField(
+        'Address',
+        validators=[DataRequired()]
+    )
+    profileImgUrl = StringField("Profile Image")
+    carPic = StringField("Car Image")
+
 
 class SignInForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -76,13 +96,9 @@ class ParkingForm(Form):
     parkingPic= TextField('Picture of your driveway')
 
 class ResForm(Form):
-    resDate = TextField(
-        'Reservation Date'
-    )
-    duration = TextField(
-        'Duration'
-    )
+    resDate = TextField('Reservation Date')
+    duration = TextField('Duration')
     carPic = TextField('Picture of your Car')
-
+    
 class ReviewForm(Form):
     content = TextField()

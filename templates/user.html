@@ -4,11 +4,15 @@
 {% block content %}
     <div class="d-flex flex-row">
         <div class="d-flex flex-column align-items-center col mt-5 ml-2" id="profile_div">
-            <img class="mt-3" id="profile_img" src={{user.profileImgUrl}} />
-            <img class='mt-3' width="25%" src={{user.carPic}}/>
+            <img class="mt-3" id="profile_img" src="{{ profileImgUrl }}" />
+            <img class='mt-3' width="25%" src="{{ carPic }}"/>
             <h5>{{ user.fullname }}</h5>
             <h5>{{ user.username }}</h5>
             <h5>{{ user.email }}</h5>
+            <h5>{{ user.address }}</h5>
+            <h5>{{ user.phoneNumber }}</h5>
+            <h5>Member since <time data-time="{{ user.joined_at }}" class="distime" datetime="{{ user.joined_at.strftime('%m-%d-%Y') }}">{{ user.joined_at.strftime('%m-%d-%Y') }}</time></h5>
+            <a href={{url_for('edit_profile', userid=user.id)}}><button class="btn btn-dark mt-2" id="submitButton">Edit</button></a>
         </div>
 
         <div class="col mt-5">
@@ -98,7 +102,7 @@
             <div class="d-flex flex-column align-items-center">
                 <h4 class="text-center"> Manage My Parking Spaces</h4>
                 {% for parking in parkings %}
-                    <a class="d-flex flex-column align-items-center" href={{url_for('managespace', parkingid=parking.id)}}><img width="50%" src ={{ parking.parkingPic }}/></a>
+                    <a class="d-flex flex-column align-items-center" href={{url_for('managespace', parkingid=parking.id)}}><img width="50%" src = "{{ parking.parkingPic }}"/></a>
                     <h5>{{ parking.description }}</h5>
                 {% endfor %}
             </div>
