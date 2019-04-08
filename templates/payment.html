@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center">
+        <img src={{url_for("static", filename="Logo.png")}}>
+        <h1>Thank for using AirPnP!</h1>
+        <form action="/profile/{{current_user.username}}" method="POST">
+            <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_oJIFVBur7fYsihHG5MndLttH000fA2XPL7"
+                data-amount="999"
+                data-name="AirPnP"
+                data-description='Reservation for "{{ parking.description }}" '
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto"
+                data-email = {{ current_user.email }}
+                data-zip-code="true">
+            </script>
+        </form>
+        <p id="payment_disclaimer">Please pay for your reservation, non-payment will result in cancellation of reservation and possibly vehicle being towed at your expense.</p>
+    </div>
+</div>
+
+{% endblock %}

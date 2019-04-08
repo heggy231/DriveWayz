@@ -108,7 +108,7 @@ def parking(parkingid):
             parking=parking_model)
         flash('The date you selected is already booked.')
 
-        return redirect(url_for('profilepage', username=g.user._get_current_object().username))
+        return redirect(url_for('payment'))
 
     return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, review_form=review_form, reservation={'resDate':'','duration':''})
 
@@ -238,6 +238,14 @@ def edit_rev(revid):
     return render_template('review.html', form=form, review=review)
 
 
+@app.route('/payment/<parkingid>', methods=['GET'])
+@login_required
+def payment(parkingid):
+    parking = models.Parking.get_by_id(int(parkingid))
+
+    return render_template('payment.html',parking=parking)
+
+
 
 if __name__ == '__main__':
     models.initialize()
@@ -249,9 +257,6 @@ if __name__ == '__main__':
             password = '123',
             phoneNumber = '4151234567',
             address = '256 Anzavista ave, San Francisco',
-            profileImgUrl = '',
-            carPic = '',
-            is_host = False
             )
         models.User.create_user(
             username = 'Ned',
@@ -260,9 +265,6 @@ if __name__ == '__main__':
             password = '123',
             phoneNumber = '4151234567',
             address = '573 8th ave, san francisco 94115',
-            profileImgUrl = 'https://i.imgflip.com/acs9p.jpg',
-            carPic = 'https://vignette.wikia.nocookie.net/simpsons/images/c/ca/NedsGeo.png/revision/latest?cb=20091222195711',
-            is_host = False
             )
         models.Parking.create_parking(
             user = 1,

@@ -28,6 +28,19 @@
             {% endfor %}
             <button type="submit" class="btn btn-primary">Reserve</button>
         </form>
+        <form action="/profile/{{current_user.username}}" method="POST">
+            <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="pk_test_oJIFVBur7fYsihHG5MndLttH000fA2XPL7"
+                data-label="Reserve"
+                data-amount="999"
+                data-name="Airpnp"
+                data-description="Example charge"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto"
+                data-zip-code="true">
+            </script>
+        </form>
     </div>
     {% endif %}
     <div id="reviews_div">

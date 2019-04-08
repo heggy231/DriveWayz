@@ -15,7 +15,7 @@ class User(UserMixin, Model):
     address = CharField(max_length=100)
     joined_at = DateTimeField(default=datetime.datetime.now())
     is_host = BooleanField(default=False)
-    profileImgUrl = TextField(default= str('default.png'))
+    profileImgUrl = TextField(default= 'default.png')
     carPic = TextField(default='defaultcar.png')
     
     class Meta:
@@ -23,7 +23,7 @@ class User(UserMixin, Model):
         order_by = ('-joined_at',)
         
     @classmethod
-    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl, carPic=('defaultcar.png'), is_host=False):
+    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl='default.png', carPic='defaultcar.png', is_host=False):
         try:
             cls.create(
                 username=username,
