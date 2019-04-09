@@ -6,10 +6,7 @@ import os
 import models 
 import forms 
 import json
-from werkzeug.utils import secure_filename
 import secrets
-
-
 
 DEBUG = True
 PORT = 8000
@@ -19,8 +16,6 @@ app.secret_key = 'adkjfalj.adflja.dfnasdf.asd'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = '/'
-UPLOAD_FOLDER = '/path/to/the/uploads'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 @login_manager.user_loader
@@ -224,7 +219,8 @@ def edit_profile():
         current_user.address = form.address.data
         current_user.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
-    
+        
+    flash('Your profile has been updated!', 'success')
     return render_template('editprofile.html', form=form)
 
 @app.route('/parking/<parkingid>/createreview', methods=['POST'])

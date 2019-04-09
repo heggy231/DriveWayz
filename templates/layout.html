@@ -14,81 +14,85 @@
     <title>AirPnP</title>
 </head>
 <body>
-    {% if not current_user.is_authenticated %}
-    <section id="landingpage">
-        <div class="dark-overlay">
-                <header class="headerwrap py-5">
-                    <h1>AirPnP</h1>
-                    <h3>Reserve a driveway today</h3>
-                </header>
+    <div class="content">
+        {% if not current_user.is_authenticated %}
+        <section id="landingpage">
+            <div class="dark-overlay">
+                    <header class="headerwrap py-5">
+                        <h1>AirPnP</h1>
+                        <h3>Reserve a driveway today</h3>
+                    </header>
 
-                <div id="modalwrap">
-                    <!-- Button trigger Log in Modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LogInButton">Log In</button>
-                    <!-- Log in Modal -->
-                    <div class="modal fade" id="LogInButton" tabindex="-1" role="dialog" aria-labelledby="LogInModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="LogInModalTitle">Log In</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    {% block login %}
-                                    {% endblock %}
+                    <div id="modalwrap">
+                        <!-- Button trigger Log in Modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#LogInButton">Log In</button>
+                        <!-- Log in Modal -->
+                        <div class="modal fade" id="LogInButton" tabindex="-1" role="dialog" aria-labelledby="LogInModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h5 class="modal-title" id="LogInModalTitle">Log In</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% block login %}
+                                        {% endblock %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Button trigger Sign Up Modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SignUpButton">Sign Up</button>
-                    <!-- Sign Up Modal -->
-                    <div class="modal fade" id="SignUpButton" tabindex="-1" role="dialog" aria-labelledby="SignUpModalTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="SignUpModalTitle">Sign Up</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    {% block signup %}
-                                    {% endblock %}
+                        <!-- Button trigger Sign Up Modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#SignUpButton">Sign Up</button>
+                        <!-- Sign Up Modal -->
+                        <div class="modal fade" id="SignUpButton" tabindex="-1" role="dialog" aria-labelledby="SignUpModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="SignUpModalTitle">Sign Up</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% block signup %}
+                                        {% endblock %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-    </section>
+        </section>
+        {% endif %}
+
+
+        {% if current_user.is_authenticated %}
+        <!-------------- NAVBAR ------------------->
+            <div class="d-flex justify-content-between" id="navbar">
+                <div class="d-flex justify-content-start">
+                    <img id="logo" src={{url_for("static", filename="Logo.png")}}>
+                    <a id="#" href="{{ url_for('index') }}"><h3>AirPnP</h3></a>
+                </div>
+                <nav id="#">
+                    <div class="d-flex justify-content-end">
+                        {% if current_user.is_authenticated %}
+                            <a id="#" href={{url_for('profilepage', username=current_user.username)}}><h3>Hello {{current_user.username}}</h3></a>
+                            <a id="navPic_div" class="d-flex flex-column align-itens-center" href={{url_for('profilepage', username=current_user.username)}}><img id="navPic" src="{{ url_for('static', filename='profile_pics/' + current_user.profileImgUrl) }}" /></a>
+                            <a href="{{url_for('logout')}}"><button class="btn btn-dark" id="signoutButton">Sign Out</button></a>
+                        {% endif %}
+                    </div> 
+                </nav> 
+            </div> 
+            
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer class="d-flex flex-column align-items-center">    
+            <p class="copyright">&copy;2019 Alomgir Hossain</p>
+    </footer>
     {% endif %}
-
-    {% if current_user.is_authenticated %}
-    <!-------------- NAVBAR ------------------->
-        <div class="d-flex justify-content-between" id="navbar">
-            <div class="d-flex justify-content-start">
-                <img id="logo" src={{url_for("static", filename="Logo.png")}}>
-                <a id="#" href="{{ url_for('index') }}"><h3>AirPnP</h3></a>
-            </div>
-            <nav id="#">
-                <div class="d-flex justify-content-end">
-                    {% if current_user.is_authenticated %}
-                        <a id="#" href={{url_for('profilepage', username=current_user.username)}}><h3>Hello {{current_user.username}}</h3></a>
-                        <a id="navPic_div" class="d-flex flex-column align-itens-center" href={{url_for('profilepage', username=current_user.username)}}><img id="navPic" src="{{ url_for('static', filename='profile_pics/' + current_user.profileImgUrl) }}" /></a>
-                        <a href="{{url_for('logout')}}"><button class="btn btn-dark" id="signoutButton">Sign Out</button></a>
-                    {% endif %}
-                </div> 
-            </nav> 
-        </div> 
-        
-    {% block content %}
-    {% endblock %}
-
-    {% endif %}
-
 </body>
 </html>

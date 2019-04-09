@@ -5,6 +5,8 @@
     position: relative;
     text-align: center;
     -webkit-animation: fadein 3s; 
+    background-position: center;
+    background-attachment: fixed;
 }
 
 @keyframes fadein {
@@ -12,8 +14,24 @@
     to   { opacity: 1; }
 }
 
-#modalwrap{
-    background-position: center;
+.content{
+    min-height: calc(100vh - 50px);
+}
+
+footer{
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    height:50px;
+}
+
+
+.modal-header{
+    background-color: #66cc91;
+}
+
+.modal-title{
+    text-align: center;
 }
 
 .dark-overlay {

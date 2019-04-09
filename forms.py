@@ -2,9 +2,10 @@ from flask_wtf import FlaskForm as Form
 from models import User
 from models import Parking
 from models import Reservation
-from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField, IntegerField, DateField, BooleanField
+from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField, IntegerField, BooleanField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email, Length, EqualTo)
 from flask_wtf.file import FileField, FileAllowed
+from wtforms.fields import DateField
 
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():

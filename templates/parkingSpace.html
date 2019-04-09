@@ -21,11 +21,20 @@
     {% else %}
     <div id='reserve_form' class="d-inline-block">
         <h3>Reserve this driveway</h3>
-        <form class="" method="POST" action="" novalidate>
+        <form class="form-group" method="POST" action="" novalidate>
             {{ form.hidden_tag()}}
-            {% for field in form %}
-                {{render_field(field)}}
-            {% endfor %}
+            {{ form.resDate.label }}
+            <input type="date" {{ form.resDate()}}>
+            <p>How many days?</p> 
+                <select {{ form.duration()}}>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                </select>
             <button type="submit" class="btn btn-primary">Reserve</button>
         </form>
     </div>
