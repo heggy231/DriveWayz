@@ -15,8 +15,8 @@ class User(UserMixin, Model):
     address = CharField(max_length=100)
     joined_at = DateTimeField(default=datetime.datetime.now())
     is_host = BooleanField(default=False)
-    profileImgUrl = TextField(default= 'default.png')
-    carPic = TextField(default='defaultcar.png')
+    profileImgUrl = CharField(null=True, default= 'default.png')
+    carPic = CharField(null=True, default='defaultcar.png')
     
     class Meta:
         database = DATABASE
@@ -57,14 +57,14 @@ class Parking(Model):
     price = CharField()
     description = CharField()
     location = CharField()
-    parkingPic = CharField()
+    parkingPic = CharField(null=True, default='Logo.png')
 
     class Meta:
         database = DATABASE
         order_by = ('-user',)
 
     @classmethod
-    def create_parking(cls, user, price, description, location, parkingPic):
+    def create_parking(cls, user, price, description, location, parkingPic='Logo.png'):
         try:
             cls.create(
                 user = user,
@@ -97,21 +97,19 @@ class Reservation(Model):
     )
     resDate = CharField(unique=True)
     duration = CharField()
-    carPic = CharField()
 
     class Meta:
         database = DATABASE
         order_by = ('-parking',)
 
     @classmethod
-    def create_res(cls, user, parking, resDate, duration, carPic):
+    def create_res(cls, user, parking, resDate, duration):
         try:
             cls.create(
                 user = user,
                 parking = parking,
                 resDate = resDate,
                 duration = duration,
-                carPic = carPic
             )
         except IntegrityError:
             raise ValueError("Reservation already exist error")

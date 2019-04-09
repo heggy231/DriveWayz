@@ -6,7 +6,7 @@
     <div id='#' class="d-inline-block" >
         <h5>Edit Your Parking Space</h5>
         <form id="managespace_divs" class="d-flex flex-column"  method="POST" action="" novalidate>
-                <img width="75%" src="{{parking.parkingPic}}"/>
+                <img width="75%" src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/>
                 {{ form.hidden_tag()}}
                 {{ form.price.label}}
                 {{ form.price(value = parking.price)}}
@@ -25,8 +25,8 @@
         <p>Renter History</p>
         {% for space_reservation in space_reservations %}
             <div id='card_div' class="d-flex flex-row justify-content-between p-2">
-                <img class='mr-2' height="50" width="50" src ="{{ space_reservation.user.profileImgUrl }}"/>
-                <img class='mr-2' height="50" width="50" src ="{{ space_reservation.user.carPic }}"/>                
+                <img class='mr-2' height="50" width="50" src="{{ url_for ('static',filename='profile_pics/' + space_reservation.user.profileImgUrl) }}"/>
+                <img class='mr-2' height="50" width="50" src="{{ url_for ('static',filename='profile_pics/' + space_reservation.user.carPic) }}"/>                
                 {{ space_reservation.user.username }}
                 {{ space_reservation.parking.description }}
                 {{ space_reservation.resDate }}

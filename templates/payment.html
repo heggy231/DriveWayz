@@ -10,7 +10,7 @@
             <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="pk_test_oJIFVBur7fYsihHG5MndLttH000fA2XPL7"
-                data-amount="999"
+                data-amount="{{ parking.price }}"
                 data-name="AirPnP"
                 data-description='Reservation for "{{ parking.description }}" '
                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"

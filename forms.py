@@ -4,6 +4,7 @@ from models import Parking
 from models import Reservation
 from wtforms import StringField, PasswordField, TextAreaField, TextField, SubmitField, IntegerField, DateField, BooleanField
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email, Length, EqualTo)
+from flask_wtf.file import FileField, FileAllowed
 
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():
@@ -57,8 +58,6 @@ class SignUpForm(Form):
         'Address',
         validators=[DataRequired()]
     )
-    profileImgUrl = StringField("Profile Image")
-    carPic = StringField("Car Image")
 
 class UpdateProfile(Form):
     username = StringField('Username')
@@ -78,8 +77,8 @@ class UpdateProfile(Form):
         'Address',
         validators=[DataRequired()]
     )
-    profileImgUrl = StringField("Profile Image")
-    carPic = StringField("Car Image")
+    profileImgUrl = FileField("Update Profile Picture", validators=[FileAllowed(['png', 'jpg', 'jpeg'])])
+    carPic = FileField("Update Car Picture", validators=[FileAllowed(['png', 'jpg', 'jpeg'])])
 
 
 class SignInForm(Form):
@@ -93,12 +92,11 @@ class ParkingForm(Form):
     price= TextField('Price')
     description = TextField('Description')
     location = TextField('Address')
-    parkingPic= TextField('Picture of your driveway')
+    parkingPic = FileField("Update a picture of your driveway", validators=[FileAllowed(['png', 'jpg', 'jpeg'])])
 
 class ResForm(Form):
     resDate = TextField('Reservation Date')
     duration = TextField('Duration')
-    carPic = TextField('Picture of your Car')
     
 class ReviewForm(Form):
     content = TextField()

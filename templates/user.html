@@ -102,7 +102,7 @@
             <div class="d-flex flex-column align-items-center">
                 <h4 class="text-center"> Manage My Parking Spaces</h4>
                 {% for parking in parkings %}
-                    <a class="d-flex flex-column align-items-center" href={{url_for('managespace', parkingid=parking.id)}}><img width="50%" src = "{{ parking.parkingPic }}"/></a>
+                    <a class="d-flex flex-column align-items-center" href={{url_for('managespace', parkingid=parking.id)}}><img width="50%" src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/></a>
                     <h5>{{ parking.description }}</h5>
                 {% endfor %}
             </div>

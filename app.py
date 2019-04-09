@@ -1,11 +1,14 @@
 from flask import Flask, g, session
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_bcrypt import check_password_hash
 import os
 import models 
 import forms 
 import json
+from werkzeug.utils import secure_filename
+import secrets
+
 
 
 DEBUG = True
@@ -16,6 +19,9 @@ app.secret_key = 'adkjfalj.adflja.dfnasdf.asd'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = '/'
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 
 @login_manager.user_loader
 def load_user(userid):
@@ -46,9 +52,7 @@ def handle_signup(form):
         password=form.password.data,
         fullname=form.fullname.data,
         phoneNumber=form.phoneNumber.data,
-        address=form.address.data,
-        profileImgUrl=form.profileImgUrl.data,
-        carPic=form.carPic.data,
+        address=form.address.data
         )
     # g.db.session.add(user)
     # g.db.session.commit()
@@ -69,6 +73,25 @@ def handle_login(form):
             return redirect(url_for('index'))
         else:
             flash("your email or password doesn't match", "error")
+
+def save_parking_picture(form_parking_pic):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_parking_pic.filename)
+    parking_pic_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/parking_pics', parking_pic_fn)
+    form_parking_pic.save(picture_path)
+
+    return parking_pic_fn
+
+def save_picture(form_profile_pic):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_profile_pic.filename)
+    profile_pic_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', profile_pic_fn)
+    form_profile_pic.save(picture_path)
+
+    return profile_pic_fn
+
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
@@ -104,11 +127,10 @@ def parking(parkingid):
             user=g.user._get_current_object(),
             resDate=form.resDate.data,
             duration=form.duration.data,
-            carPic=form.carPic.data,
             parking=parking_model)
         flash('The date you selected is already booked.')
 
-        return redirect(url_for('payment'))
+        return redirect(url_for('payment', parkingid=parking_model))
 
     return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, review_form=review_form, reservation={'resDate':'','duration':''})
 
@@ -121,7 +143,7 @@ def profilepage(username):
     reservations = current_user.get_reservations()
     parking_form = forms.ParkingForm()
     reviews = current_user.get_my_reviews()
-    profileImgUrl = url_for('static', filename='profile_pics/' + current_user.profileImgUrl)
+    profileImgUrl = url_for('static', filename='profile_pics/' + current_user.profileImgUrl )
     carPic = url_for('static', filename='profile_pics/' + current_user.carPic)
 
     form = forms.HostForm()
@@ -142,12 +164,10 @@ def delete_res(resid):
 @app.route('/reservation/<resid>/edit', methods=['GET','POST'])
 def edit_res(resid):
     reservation = models.Reservation.get(models.Reservation.id == resid)
-    
     form = forms.ResForm()
     if form.validate_on_submit():
         reservation.resDate = form.resDate.data
         reservation.duration = form.duration.data
-        reservation.carPic = form.carPic.data
         reservation.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
@@ -172,33 +192,40 @@ def managespace(parkingid):
     parking = models.Parking.get(models.Parking.id == parkingid)
     space_reservations = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
 
+
     form=forms.ParkingForm()
     if form.validate_on_submit():
+        if form.parkingPic.data:
+            picture_file = save_parking_picture(form.parkingPic.data)
+            parking.parkingPic = picture_file
         parking.price = form.price.data
         parking.description = form.description.data
         parking.location = form.location.data
-        parking.parkingPic = form.parkingPic.data
         parking.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
     return render_template('managespace.html', form=form, parking=parking, space_reservations=space_reservations)
 
+
 @app.route('/editprofile/', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-
     form=forms.UpdateProfile()
     if form.validate_on_submit():
+        if form.profileImgUrl.data:
+            picture_file = save_picture(form.profileImgUrl.data)
+            current_user.profileImgUrl = picture_file
+        if form.carPic.data:
+            picture_file = save_picture(form.carPic.data)
+            current_user.carPic = picture_file
         current_user.username = form.username.data
         current_user.email = form.email.data
         current_user.fullname = form.fullname.data
         current_user.phoneNumber = form.phoneNumber.data
         current_user.address = form.address.data
-        current_user.profileImgUrl = form.profileImgUrl.data
-        current_user.carPic = form.carPic.data
         current_user.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
-
+    
     return render_template('editprofile.html', form=form)
 
 @app.route('/parking/<parkingid>/createreview', methods=['POST'])
@@ -270,29 +297,25 @@ if __name__ == '__main__':
             user = 1,
             price = '$25',
             description = 'OK parking space',
-            location = '225 bush st san francisco',
-            parkingPic = 'https://images.unsplash.com/14/unsplash_5243e9ef164a5_1.JPG?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+            location = '225 bush st san francisco'
         )
         models.Parking.create_parking(
             user = 2,
             price = '$10',
             description = 'Friendly neighbors parking space',
-            location = 'ocean beach san francisco',
-            parkingPic = 'https://images.unsplash.com/photo-1465301055284-72f355cfd745?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+            location = 'ocean beach san francisco'
         )
         models.Parking.create_parking(
             user = 2,
             price = '$15',
             description = 'Safe parking space',
-            location = 'sunset san francisco',
-            parkingPic = 'https://images.unsplash.com/photo-1527377667-83c6c76f963f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+            location = 'sunset san francisco'
         )
         models.Reservation.create_res(
             user = 2,
             parking = 1,
             resDate = '5-5-19',
-            duration = '1 day',
-            carPic = 'http://fcauthority.com/wp-content/uploads/2017/01/Homers-Car-700x340.jpg'
+            duration = '1 day'
         )
         models.Review.create_review(
             parking = 1,

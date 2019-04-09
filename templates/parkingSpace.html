@@ -4,7 +4,7 @@
 {% block content %}
 <div id='parking_page_div' class="d-flex flex-row justify-content-around">
     <div id='parking_post_div' class="d-flex flex-column col align-items-center">
-            <img src="{{parking.parkingPic}}"/>
+            <img src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/>
             <div>{{parking.price}}</div>
             <div>{{parking.description}}</div>
             <div>{{parking.location}}</div>
@@ -27,19 +27,6 @@
                 {{render_field(field)}}
             {% endfor %}
             <button type="submit" class="btn btn-primary">Reserve</button>
-        </form>
-        <form action="/profile/{{current_user.username}}" method="POST">
-            <script
-                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                data-key="pk_test_oJIFVBur7fYsihHG5MndLttH000fA2XPL7"
-                data-label="Reserve"
-                data-amount="999"
-                data-name="Airpnp"
-                data-description="Example charge"
-                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                data-locale="auto"
-                data-zip-code="true">
-            </script>
         </form>
     </div>
     {% endif %}
