@@ -6,13 +6,16 @@
     <div class="d-flex flex-column align-items-center">
         <img src={{url_for("static", filename="Logo.png")}}>
         <h1>Thank for using AirPnP!</h1>
+        <div>{{ parking.price }}</div>
+        <div>{{ parking.description }}</div>
+        <div>{{ parking.location }}</div>
         <form action="/profile/{{current_user.username}}" method="POST">
             <script
                 src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                 data-key="pk_test_oJIFVBur7fYsihHG5MndLttH000fA2XPL7"
-                data-amount="{{ parking.price }}"
+                data-amount= {{ parking.price }}
                 data-name="AirPnP"
-                data-description='Reservation for "{{ parking.description }}" '
+                data-description="Reservation for '{{ parking.description }}' "
                 data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                 data-locale="auto"
                 data-email = {{ current_user.email }}

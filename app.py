@@ -78,8 +78,8 @@ def save_parking_picture(form_parking_pic):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_parking_pic.filename)
     parking_pic_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/parking_pics', parking_pic_fn)
-    form_parking_pic.save(picture_path)
+    parking_picture_path = os.path.join(app.root_path, 'static/parking_pics', parking_pic_fn)
+    form_parking_pic.save(parking_picture_path)
 
     return parking_pic_fn
 
@@ -192,12 +192,11 @@ def managespace(parkingid):
     parking = models.Parking.get(models.Parking.id == parkingid)
     space_reservations = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
 
-
     form=forms.ParkingForm()
     if form.validate_on_submit():
         if form.parkingPic.data:
-            picture_file = save_parking_picture(form.parkingPic.data)
-            parking.parkingPic = picture_file
+            parking_picture_file = save_parking_picture(form.parkingPic.data)
+            parking.parkingPic = parking_picture_file
         parking.price = form.price.data
         parking.description = form.description.data
         parking.location = form.location.data
