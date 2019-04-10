@@ -62,12 +62,11 @@ def handle_login(form):
         flash("your email or password doesn't match", "error")
     else:
         if check_password_hash(user.password, form.password.data):
-            ## creates session
             login_user(user)
             flash('Hi! You have successfully Signed In!!!', 'success signin')
             return redirect(url_for('index'))
         else:
-            flash("your email or password doesn't match", "error")
+            flash("Your email or password doesn't match", "error")
 
 def save_parking_picture(form_parking_pic):
     random_hex = secrets.token_hex(8)
@@ -106,28 +105,29 @@ def index():
 @login_required
 def logout():
     logout_user()
-    flash("You've been logged out", "success")
     return redirect(url_for('index'))
 
 
 @app.route('/parking/<parkingid>', methods=['GET','POST'])
 def parking(parkingid):
-    parking_model = models.Parking.get_by_id(int(parkingid))
+    parking = models.Parking.get_by_id(int(parkingid))
     reviews = models.Review.select().where(models.Review.parking_id==int(parkingid))
     review_form = forms.ReviewForm()
-
     form = forms.ResForm()
+    res_parkingid = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
+    # res_id = models.Reservation.get(models.Reservation.id == res_parkingid)
+    # res_date_exists = models.Reservation.resDate().where(models.Reservation)
+
     if form.validate_on_submit():
         models.Reservation.create(
             user=g.user._get_current_object(),
             resDate=form.resDate.data,
-            duration=form.duration.data,
-            parking=parking_model)
-        flash('The date you selected is already booked.')
+            parking=parking)
 
-        return redirect(url_for('payment', parkingid=parking_model))
+        return redirect(url_for('payment', parkingid=parking))
+        flash('The date you selected is already booked.', "error")
 
-    return render_template('parkingspace.html', parking=parking_model, form=form, reviews = reviews, review_form=review_form, reservation={'resDate':'','duration':''})
+    return render_template('parkingspace.html', parking=parking, form=form, reviews = reviews, review_form=review_form)
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST'])
@@ -145,7 +145,7 @@ def profilepage(username):
     if form.validate_on_submit():
         user.is_host = form.is_host.data
         user.save()
-
+    
     return render_template('user.html', user=user,form=form, reservations=reservations, parking=parking,parkings=parkings, parking_form=parking_form, reviews=reviews, profileImgUrl=profileImgUrl, carPic=carPic) 
 
 @app.route('/profile/<resid>/delete')
@@ -162,7 +162,6 @@ def edit_res(resid):
     form = forms.ResForm()
     if form.validate_on_submit():
         reservation.resDate = form.resDate.data
-        reservation.duration = form.duration.data
         reservation.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
@@ -217,9 +216,10 @@ def edit_profile():
         current_user.phoneNumber = form.phoneNumber.data
         current_user.address = form.address.data
         current_user.save()
+
+        flash('Your profile has been updated!', 'success')
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
-    flash('Your profile has been updated!', 'success')
     return render_template('editprofile.html', form=form)
 
 @app.route('/parking/<parkingid>/createreview', methods=['POST'])
@@ -326,7 +326,6 @@ if __name__ == '__main__':
             user = 2,
             parking = 1,
             resDate = '5-5-19',
-            duration = '1 day'
         )
         models.Review.create_review(
             parking = 1,

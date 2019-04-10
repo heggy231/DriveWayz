@@ -20,24 +20,25 @@
     {% else %}
     <div id='reserve_form' class="d-inline-block">
         <h3>Reserve this driveway</h3>
-        <form class="form-group" method="POST" action="" novalidate>
+        <div id="error_message">
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class={{category}}>{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <form id="edit_forms" class="p-2" method="POST" action="" novalidate>
             {{ form.hidden_tag()}}
-            {{ form.resDate.label }}
+            <h5>{{ form.resDate.label }}</h5>
             <input type="date" {{ form.resDate()}}>
-            <p>How many days?</p> 
-                <select {{ form.duration()}}>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                </select>
             <button type="submit" class="btn btn-primary">Reserve</button>
         </form>
     </div>
     {% endif %}
+
     <div id="reviews_div">
         <h3>Reviews</h3>
         {% for review in reviews %}
@@ -50,10 +51,10 @@
             </div>
         {% endfor %}
 
-        <form class="" method="POST" action="/parking/{{parking.id}}/createreview" novalidate>
+        <form class="d-flex flex-column" method="POST" action="/parking/{{parking.id}}/createreview" novalidate>
             {{ review_form.hidden_tag()}}
             {{ review_form.content()}}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
         </form>
     </div>
 </div>

@@ -15,6 +15,7 @@ def email_exists(form, field):
     if User.select().where(User.email == field.data).exists():
         raise ValidationError('User with that email already exists.')
 
+
 class SignUpForm(Form):
     username = StringField(
         'Username',
@@ -96,8 +97,7 @@ class ParkingForm(Form):
     parkingPic = FileField("Update a picture of your driveway", validators=[FileAllowed(['png', 'jpg', 'jpeg'])])
 
 class ResForm(Form):
-    resDate = TextField('Reservation Date')
-    duration = TextField('Duration')
+    resDate = TextField('Reservation Date', validators=[DataRequired()])
     
 class ReviewForm(Form):
-    content = TextField()
+    content = TextField(validators=[DataRequired()])

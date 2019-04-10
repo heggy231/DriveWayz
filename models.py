@@ -96,20 +96,18 @@ class Reservation(Model):
         backref='reservations'
     )
     resDate = CharField(unique=True)
-    duration = CharField()
 
     class Meta:
         database = DATABASE
         order_by = ('-parking',)
 
     @classmethod
-    def create_res(cls, user, parking, resDate, duration):
+    def create_res(cls, user, parking, resDate):
         try:
             cls.create(
                 user = user,
                 parking = parking,
-                resDate = resDate,
-                duration = duration,
+                resDate = resDate
             )
         except IntegrityError:
             raise ValueError("Reservation already exist error")

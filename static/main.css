@@ -155,4 +155,13 @@ footer{
     background-color: #66cc9125;
 }
 
+/* #error_message{
+    text-align: center;
+    margin-top: 20px;
+    margin-right:20px;
+} */
 
+#nav_error_message{
+    margin-top: 10px;
+    margin-left: 150px;
+}
