@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import render_field %}
 
 {% block content %}
 
-<div id='#' class="d-inline-block">
+<div id='#' class="d-flex flex-column align-items-center">
     <h3>Edit Your Reservation</h3>
-    <form class="d-flex flex-column" method="POST" action="" novalidate>
+    <form class="d-flex flex-column p-3" id="edit_forms" method="POST" action="" novalidate>
             {{ form.hidden_tag()}}
-            {{ form.resDate.label}}
-            <input type="date" {{ form.resDate()}}>
-            <p>How many days?</p> 
+            {{ form.resDate.label(class="text-center")}}
+            <input type="date" {{ form.resDate()}}    >
+            <p class="text-center">How many days?</p> 
                 <select {{ form.duration()}}>
                     <option>1</option>
                     <option>2</option>

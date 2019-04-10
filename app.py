@@ -176,8 +176,7 @@ def createspace(username):
             user=g.user._get_current_object(),
             price = form.price.data,
             description = form.description.data,
-            location =form.location.data,
-            parkingPic = form.parkingPic.data
+            location =form.location.data
         )
     return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
@@ -219,7 +218,7 @@ def edit_profile():
         current_user.address = form.address.data
         current_user.save()
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
-        
+
     flash('Your profile has been updated!', 'success')
     return render_template('editprofile.html', form=form)
 
@@ -278,7 +277,7 @@ if __name__ == '__main__':
             fullname = 'Homer Simpson',
             password = '123',
             phoneNumber = '4151234567',
-            address = '256 Anzavista ave, San Francisco',
+            address = '256 Anzavista ave, San Francisco'
             )
         models.User.create_user(
             username = 'Ned',
@@ -286,8 +285,25 @@ if __name__ == '__main__':
             fullname = 'Ned Flanders',
             password = '123',
             phoneNumber = '4151234567',
-            address = '573 8th ave, san francisco 94115',
-            )
+            address = '573 8th ave, san francisco 94115'
+        )
+        models.User.create_user(
+            username = 'Alom',
+            email = 'alomg@ga.com',
+            fullname = 'Alom Hossain',
+            password = '123',
+            phoneNumber = '4151234567',
+            address = '256 Anzavista ave, san francisco 94115'
+        )
+        models.User.create_user(
+            username = 'AliW',
+            email = 'aliw@ga.com',
+            fullname = 'Ali Wong',
+            password = '123',
+            phoneNumber = '4151234567',
+            address = '2210 23rd ave, san francisco 94115',
+        )
+
         models.Parking.create_parking(
             user = 1,
             price = '$25',

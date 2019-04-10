@@ -1,39 +1,38 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import render_field %}
 
 {% block content %}
 
-<div id='#' class="d-inline-block">
+<div id='#' class="d-flex flex-column align-items-center">
     <h3>Edit Your Profile</h3>
-    <form class="d-flex flex-column" method="POST" action="" enctype="multipart/form-data">
+    <form class="d-flex flex-column p-3" id="edit_forms" method="POST" action="" enctype="multipart/form-data">
             {{ form.hidden_tag()}}
-            {{ form.username.label}}
+            {{ form.username.label(class="text-center")}}
             {{ form.username ( value=current_user.username ) }}
-            {{ form.email.label}}
+            {{ form.email.label(class="text-center")}}
             {{ form.email ( value=current_user.email ) }}
-            {{ form.fullname.label}}
+            {{ form.fullname.label(class="text-center")}}
             {{ form.fullname ( value=current_user.fullname ) }}
-            {{ form.phoneNumber.label}}
+            {{ form.phoneNumber.label(class="text-center")}}
             {{ form.phoneNumber ( value=current_user.phoneNumber ) }}
-            {{ form.address.label}}
+            {{ form.address.label(class="text-center")}}
             {{ form.address ( value=current_user.address ) }}
-            {{ form.profileImgUrl.label}}
-            {{ form.profileImgUrl ( class='form-control-file' ) }}
+            {{ form.profileImgUrl.label(class="text-center")}}
+            <div id="image_field">{{ form.profileImgUrl ( class='form-control-file' ) }}
                 {% if form.profileImgUrl.errors %}
                     {% for error in form.profileImgUrl.errors %}
                         <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
-
-            {{ form.carPic.label}}
-            {{ form.carPic (  class='form-control-file') }}
+            </div>
+            {{ form.carPic.label(class="text-center")}}
+            <div id="image_field">{{ form.carPic (  class='form-control-file') }}
                 {% if form.carPic.errors %}
                     {% for error in form.carPic.errors %}
                         <span class="text-danger">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
-
-        <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        <button type="submit" class="btn btn-primary mt-2">Save</button>
     </form>
 </div>
 

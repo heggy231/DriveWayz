@@ -1,17 +1,16 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import render_field %}
 
 {% block content %}
 
-<div id='#' class="d-inline-block">
-    <h3>Edit Your Review</h3>
-    <form class="d-flex flex-column" method="POST" action="" novalidate>
-            {{ form.hidden_tag()}}
-            {{ review.review_date}}
-            {{ form.content.label}}
-            {{ form.content ( value=review.content ) }}
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-</div>
+    <div id='#' class="d-flex flex-column align-items-center">
+        <h3>Edit Your Review</h3>
+        <form class="d-flex flex-column p-3" id="review_edit_form" method="POST" action="" novalidate>
+                {{ form.hidden_tag()}}
+                <div class="text-center">{{ review.review_date}}</div>
+                {{ form.content.label(class="text-center")}}
+                {{ form.content ( value=review.content , cols="35", rows="20" ) }}
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
 
 {% endblock %}

@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import render_field %}
 
 {% block content %}
     <div class="d-flex flex-row">
@@ -87,12 +86,15 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form class="" method="POST" action="/profile/{{user.username}}/createspace" novalidate>
+                            <form class="d-flex flex-column align-items-center" method="POST" action="/profile/{{user.username}}/createspace" novalidate>
                                     {{ parking_form.hidden_tag()}}
-                                    {% for field in parking_form %}
-                                        {{render_field(field)}}
-                                    {% endfor %}
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                    {{ parking_form.price.label }}
+                                    {{ parking_form.price()}}
+                                    {{ parking_form.description.label }}
+                                    {{ parking_form.description()}}
+                                    {{ parking_form.location.label }}
+                                    {{ parking_form.location()}}
+                                <button type="submit" class="btn btn-primary mt-2">Submit</button>
                             </form>
                         </div>
                     </div>

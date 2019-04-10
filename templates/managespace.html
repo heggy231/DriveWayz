@@ -1,20 +1,19 @@
 {% extends "layout.html" %}
-{% from 'macros.html' import render_field %}
 
 {% block content %}
 <div class="d-flex flex-row justify-content-between mt-3">
-    <div id='#' class="d-inline-block" >
+    <div id='#' class="d-flex flex-column align-items-center" >
         <h5>Edit Your Parking Space</h5>
-        <form id="managespace_divs" class="d-flex flex-column"  method="POST" action="" enctype="multipart/form-data">
-                <img width="75%" src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/>
+        <form id="managespace_div" class="d-flex flex-column p-3"  method="POST" action="" enctype="multipart/form-data">
+                <div class="text-center"><img width="75%" src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/></div>
                 {{ form.hidden_tag()}}
-                {{ form.price.label}}
+                {{ form.price.label(class="text-center")}}
                 {{ form.price(value = parking.price)}}
-                {{ form.description.label}}
+                {{ form.description.label(class="text-center")}}
                 {{ form.description ( value=parking.description ) }}
-                {{ form.location.label}}
+                {{ form.location.label(class="text-center")}}
                 {{ form.location ( value=parking.location ) }}
-                {{ form.parkingPic.label}}
+                {{ form.parkingPic.label(class="text-center")}}
                 {{ form.parkingPic ( class='form-control-file' ) }}
                     {% if form.parkingPic.errors %}
                         {% for error in form.parkingPic.errors %}
@@ -25,8 +24,11 @@
         </form>
     </div>
 
-    <div id="managespace_divs" class="d-flex flex-column align-items-center">
-        <p>Renter History</p>
+    <div id="renters_div" class="d-flex flex-column align-items-center">
+        <h4>Renter History</h4>
+        {% if not space_reservations %}
+        <h6>No renters yet.</h6>
+        {% endif %}
         {% for space_reservation in space_reservations %}
             <div id='card_div' class="d-flex flex-row justify-content-between p-2">
                 <img class='mr-2' height="50" width="50" src="{{ url_for ('static',filename='profile_pics/' + space_reservation.user.profileImgUrl) }}"/>
