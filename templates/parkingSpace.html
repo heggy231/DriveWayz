@@ -41,15 +41,18 @@
     <div id="reviews_div">
         <h3>Reviews</h3>
         {% for review in reviews %}
-            <div id="card_div">
-                <div>{{ review.content }}</div> 
-                By:{{review.user.username}}
+            <div id="card_div" class="d-flex flex-start">
+                <img class='mr-2' height="50" width="50" src="{{ url_for ('static',filename='profile_pics/' + review.user.profileImgUrl) }}"/>
+                <div>
+                    <div>{{ review.content }}</div> 
+                    By:{{review.user.username}}
+                </div>
             </div>
         {% endfor %}
 
         <form class="" method="POST" action="/parking/{{parking.id}}/createreview" novalidate>
             {{ review_form.hidden_tag()}}
-            {{review_form.content()}}
+            {{ review_form.content()}}
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
