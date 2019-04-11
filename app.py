@@ -276,7 +276,7 @@ if 'ON_HEROKU' in os.environ:
             carPic = 'samples/homer_car.png'
         )
 
-        except ValueError:
+    except ValueError:
         pass
 
 
