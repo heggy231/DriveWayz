@@ -11,7 +11,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>    
     <script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
-    <title>AirPnP</title>
+    <title>DriveWayz</title>
 </head>
 <body>
     <div class="content">
@@ -19,7 +19,7 @@
         <section id="landingpage">
             <div class="dark-overlay">
                     <header class="headerwrap py-5">
-                        <h1>AirPnP</h1>
+                        <h1>DriveWayz</h1>
                         <h3>Reserve a driveway today</h3>
                     </header>
 
@@ -92,7 +92,7 @@
             <div class="d-flex justify-content-between" id="navbar">
                 <div class="d-flex justify-content-start">
                     <img id="logo" src={{url_for("static", filename="Logo.png")}}>
-                    <a id="#" href="{{ url_for('index') }}"><h3>AirPnP</h3></a>
+                    <a id="#" href="{{ url_for('index') }}"><h3>DriveWayz</h3></a>
                 </div>
                 <div id="nav_error_message" >
                         {% with messages = get_flashed_messages(with_categories=True) %}
@@ -118,7 +118,7 @@
         {% endblock %}
     </div>
     <footer class="d-flex flex-column align-items-center">    
-            <p class="copyright">&copy;2019 AirPnP, Alomgir Hossain</p>
+            <p class="copyright">&copy;2019 DriveWayz, Alomgir Hossain</p>
     </footer>
     {% endif %}
 </body>
