@@ -59,7 +59,7 @@ def handle_login(form):
     try:
         user = models.User.get(models.User.email == form.email.data)
     except models.DoesNotExist:
-        flash("your email or password doesn't match", "error")
+        flash("Your email or password doesn't match", "error")
     else:
         if check_password_hash(user.password, form.password.data):
             login_user(user)
@@ -112,22 +112,21 @@ def logout():
 def parking(parkingid):
     parking = models.Parking.get_by_id(int(parkingid))
     reviews = models.Review.select().where(models.Review.parking_id==int(parkingid))
+    reservations = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
     review_form = forms.ReviewForm()
     form = forms.ResForm()
-    res_parkingid = models.Reservation.select().where(models.Reservation.parking_id==int(parkingid))
-    # res_id = models.Reservation.get(models.Reservation.id == res_parkingid)
-    # res_date_exists = models.Reservation.resDate().where(models.Reservation)
+    res_date = reservations.select()
 
     if form.validate_on_submit():
+        breakpoint()
         models.Reservation.create(
             user=g.user._get_current_object(),
             resDate=form.resDate.data,
             parking=parking)
 
         return redirect(url_for('payment', parkingid=parking))
-        flash('The date you selected is already booked.', "error")
 
-    return render_template('parkingspace.html', parking=parking, form=form, reviews = reviews, review_form=review_form)
+    return render_template('parkingspace.html', parking=parking, form=form, reviews = reviews, review_form=review_form, reservations=reservations, res_date=res_date)
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST'])
@@ -325,7 +324,7 @@ if __name__ == '__main__':
         models.Reservation.create_res(
             user = 2,
             parking = 1,
-            resDate = '5-5-19',
+            resDate = '2019-05-05',
         )
         models.Review.create_review(
             parking = 1,

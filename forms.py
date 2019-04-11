@@ -16,6 +16,7 @@ def email_exists(form, field):
         raise ValidationError('User with that email already exists.')
 
 
+
 class SignUpForm(Form):
     username = StringField(
         'Username',

@@ -95,7 +95,7 @@ class Reservation(Model):
         model=User,
         backref='reservations'
     )
-    resDate = CharField(unique=True)
+    resDate = CharField(unique=True, null=True)
 
     class Meta:
         database = DATABASE

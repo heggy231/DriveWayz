@@ -21,7 +21,7 @@
     <div id='reserve_form' class="d-inline-block">
         <h3>Reserve this driveway</h3>
         <div id="error_message">
-                {% with messages = get_flashed_messages(with_categories=True) %}
+            {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
                     {% for category, message in messages %}
                         <div class={{category}}>{{ message }}</div>
@@ -35,6 +35,12 @@
             <h5>{{ form.resDate.label }}</h5>
             <input type="date" {{ form.resDate()}}>
             <button type="submit" class="btn btn-primary">Reserve</button>
+            <div class="mt-2">
+                <p>Dates that are unavailable:</p>
+                {% for reservation in reservations %}
+                    {{ reservation.resDate }}
+                {% endfor %}
+            </div>        
         </form>
     </div>
     {% endif %}
@@ -46,7 +52,7 @@
                 <img class='mr-2' height="50" width="50" src="{{ url_for ('static',filename='profile_pics/' + review.user.profileImgUrl) }}"/>
                 <div>
                     <div>{{ review.content }}</div> 
-                    By:{{review.user.username}}
+                    By:{{ review.user.username }}
                 </div>
             </div>
         {% endfor %}
