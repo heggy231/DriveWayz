@@ -16,7 +16,7 @@
 
 <div class="d-flex flex-row justify-content-around">
     {% if current_user.id == parking.user_id %}
-    <h5 class="mt-5">You own this parking space</h5>
+    <h5 id="reserve_form" class="text-center">You own this parking space.</h5>
     {% else %}
     <div id='reserve_form' class="d-inline-block">
         <h3>Reserve this driveway</h3>

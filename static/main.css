@@ -71,6 +71,7 @@ footer{
 
 #navPic {
     max-width: 100%;
+    cursor: pointer;
 }
 
 #navPic_div{
@@ -163,5 +164,41 @@ footer{
 
 #nav_error_message{
     margin-top: 10px;
-    margin-left: 80px;
+    /* margin-left: 30px; */
+}
+
+.sidenav {
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #66cc9199;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    font-size: 36px;
+}
+
+#you_own_space{
+    margin-top: 100px;
+    text-align: center;
 }
