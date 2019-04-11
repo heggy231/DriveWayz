@@ -264,6 +264,21 @@ def payment(parkingid):
 if 'ON_HEROKU' in os.environ:
     print('hitting ')
     models.initialize()
+    try:
+        models.User.create_user(
+            username = 'Homer',
+            email = 'homer@ga.com',
+            fullname = 'Homer Simpson',
+            password = '123',
+            phoneNumber = '4151234567',
+            address = '501 28th ave, San Francisco',
+            profileImgUrl = '/samples/homer.jpg',
+            carPic = 'samples/homer_car.png'
+        )
+
+        except ValueError:
+        pass
+
 
 
 if __name__ == '__main__':
