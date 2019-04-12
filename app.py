@@ -306,7 +306,7 @@ if __name__ == '__main__':
             phoneNumber = '4151234567',
             address = '2210 23rd ave, san francisco 94115',
             profileImgUrl = '/samples/Ali_wong.jpg',
-            carPic = 'samples/red_merc.png'
+            carPic = 'samples/red_merc.jpg'
         )
         models.User.create_user(
             username = 'PeterG',

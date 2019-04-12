@@ -1,3 +1,7 @@
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
 #landingpage{
     background-image: url(./birds-eye-view-houses.jpg);
     background-size: 100%;
@@ -49,7 +53,6 @@ footer{
                 -1px -1px 0 #000,
                 -1px 1px 0 #000,
                 -1px 1px 0 #000;
-    padding-top: 300px;
 }
 
 #navbar{
@@ -127,8 +130,8 @@ footer{
     background-color: #66cc9125;
 }
 
-#nav_error_message{
-    margin-top: 10px;
+#error_message{
+    width: 350px;
 }
 
 .sidenav {
@@ -225,7 +228,6 @@ footer{
     width:50%;
 }
 
-
 @media only screen and (max-width: 500px){
     #user_page_div{
         display: flex;
@@ -286,5 +288,4 @@ footer{
         width:350px;
         height:250px;
     }
-    
 }
