@@ -2,9 +2,9 @@
 
 {% block content %}
 
-    <div id='#' class="d-flex flex-column align-items-center">
+    <div id='#' class="d-flex flex-column justify-content-center align-items-center mt-5">
         <h3>Edit Your Review</h3>
-        <form class="d-flex flex-column p-3" id="review_edit_form" method="POST" action="" novalidate>
+        <form class="d-flex flex-column  p-3" id="review_edit_form" method="POST" action="" novalidate>
                 {{ form.hidden_tag()}}
                 <div class="text-center">{{ review.review_date}}</div>
                 {{ form.content.label(class="text-center")}}

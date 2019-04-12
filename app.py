@@ -157,6 +157,8 @@ def edit_res(resid):
     if form.validate_on_submit():
         reservation.resDate = form.resDate.data
         reservation.save()
+
+        flash ('Your reservation has been updated!')
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
     return render_template('reservation.html', form=form, reservation=reservation)
@@ -228,7 +230,6 @@ def createreview(parkingid):
             content = review_form.content.data,
             parking = parking
         )
-
     return redirect('/parking/{}'.format(parkingid))
 
 @app.route('/profile/review/<revid>/delete')
@@ -248,6 +249,8 @@ def edit_rev(revid):
     if form.validate_on_submit():
         review.content = form.content.data
         review.save()
+
+        flash ('Your review has been updated!')
         return redirect(url_for('profilepage', username=g.user._get_current_object().username))
 
     return render_template('review.html', form=form, review=review)
