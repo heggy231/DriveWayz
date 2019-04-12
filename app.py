@@ -290,7 +290,7 @@ if __name__ == '__main__':
         )
         models.User.create_user(
             username = 'Alom',
-            email = 'alomg@ga.com',
+            email = 'alom@ga.com',
             fullname = 'Alom Hossain',
             password = '123',
             phoneNumber = '4151234567',

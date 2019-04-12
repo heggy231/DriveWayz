@@ -106,7 +106,7 @@
                 <nav id="#">
                     <div class="d-flex justify-content-end">
                         {% if current_user.is_authenticated %}
-                            <a id="#"><h3>Hello {{current_user.username}}</h3></a>
+                            <a id="nav_greeting"><h3>Hello {{current_user.username}}</h3></a>
                             <a id="navPic_div" class="d-flex flex-column align-itens-center" onclick="openNav()"><img id="navPic" src="{{ url_for('static', filename='profile_pics/' + current_user.profileImgUrl) }}" /></a>
                         {% endif %}
                     </div> 

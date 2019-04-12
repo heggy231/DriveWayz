@@ -89,26 +89,6 @@ footer{
     height:160px;
 }
 
-#parking_post_div{
-    max-width: 600px;
-    max-height: 450px;
-}
-
-#parking_post_div img{
-    max-width: 600px;
-    max-height: 450px;
-}
-
-#reserve_form, #reviews_div{
-    width: 600px;
-    margin-top:80px;
-}
-
-#profile_div{
-    width:200px;
-    /* background-color:; */
-}
-
 #profile_img{
     width: 50%;
 }
@@ -129,15 +109,6 @@ footer{
     text-overflow: ellipsis; 
 }
 
-#managespace_div{
-    width: 600px;
-    background-color: #66cc9125;
-}
-
-#renters_div{
-    width:600px;
-}
-
 #payment_disclaimer{
     font-size: 12px;
     color: red;
@@ -156,15 +127,8 @@ footer{
     background-color: #66cc9125;
 }
 
-/* #error_message{
-    text-align: center;
-    margin-top: 20px;
-    margin-right:20px;
-} */
-
 #nav_error_message{
     margin-top: 10px;
-    /* margin-left: 30px; */
 }
 
 .sidenav {
@@ -201,4 +165,126 @@ footer{
 #you_own_space{
     margin-top: 100px;
     text-align: center;
+}
+
+#user_page_div{
+    display: flex;
+    flex-direction: row;
+}
+
+#map{
+    width: 600px;
+    height: 450px;
+}
+
+#parking_page_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#parking_post_div{
+
+    max-width: 600px;
+    max-height: 450px;
+}
+
+#parking_post_div img{
+    max-width: 600px;
+    max-height: 450px;
+}
+
+#res_rev_divs{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#reserve_form, #reviews_div{
+    width: 600px;
+    margin-top:80px;
+}
+
+#managespace_page{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top:30px;
+}
+
+#managespace_div{
+    width: 600px;
+    background-color: #66cc9125;
+}
+
+#renters_div{
+    width:600px;
+}
+
+#carPic{
+    width:50%;
+}
+
+
+@media only screen and (max-width: 500px){
+    #user_page_div{
+        display: flex;
+        flex-direction: column;
+    }
+    #nav_greeting{
+        display:none !important;
+    }
+    #map {
+        width: 350px;
+        height: 250px;
+        margin-top: 100px;
+    }
+    #parking_page_div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #parking_post_div{
+        max-width: 350px;
+        max-height: 250px;
+    }
+    
+    #parking_post_div img{
+        max-width: 350px;
+        max-height: 250px;
+    }
+
+    #res_rev_divs{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #reserve_form, #reviews_div{
+        width: 350px;
+        margin-top:20px;
+    } 
+
+    #managespace_page{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top:30px;
+    }
+    #managespace_div, #renters_div{
+        width: 350px;
+        margin-bottom:30px;
+    }
+    #thank_you{
+        font-size: 30px;
+    }
+    #carPic{
+        width:75%;
+    }
+    #parking_pic{
+        width:350px;
+        height:250px;
+    }
+    
 }

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div id='parking_page_div' class="d-flex flex-row justify-content-around">
+<div id='parking_page_div'>
     <div id='parking_post_div' class="d-flex flex-column col align-items-center">
             <img src="{{ url_for ('static',filename='parking_pics/' + parking.parkingPic) }}"/>
             <div>{{parking.price}}</div>
@@ -9,12 +9,12 @@
             <div>{{parking.location}}</div>
     </div>
 
-    <div id="#" class="">
-            <iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{parking.location}}&key=AIzaSyAVi2f6ymqCncDvu6tMlbsFGPq-kVK5WGE" allowfullscreen></iframe>
+    <div class="#">
+            <iframe id="map" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{parking.location}}&key=AIzaSyAVi2f6ymqCncDvu6tMlbsFGPq-kVK5WGE" allowfullscreen></iframe>
     </div>
 </div>
 
-<div class="d-flex flex-row justify-content-around">
+<div id="res_rev_divs" >
     {% if current_user.id == parking.user_id %}
     <h5 id="reserve_form" class="text-center">You own this parking space.</h5>
     {% else %}
