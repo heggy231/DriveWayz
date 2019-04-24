@@ -3,37 +3,41 @@ import os
 from peewee import *
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
+from playhouse.db_url import connect
 
-DATABASE = SqliteDatabase('parkingAPP.db')
+# DATABASE = SqliteDatabase('parkingAPP.db')
+DATABASE = PostgresqlDatabase('parkingapp')
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
+
 
 class User(UserMixin, Model):
-    username = CharField(unique=True)
-    email = CharField(unique=True)
-    password = CharField(max_length=20)
+    username = CharField(max_length=100,unique=True)
+    email = CharField(max_length=100, unique=True)
+    password = CharField(max_length=100)
     fullname = CharField(max_length=50)
-    phoneNumber = CharField(max_length=10)
+    phoneNumber = CharField(max_length=100)
     address = CharField(max_length=100)
     joined_at = DateTimeField(default=datetime.datetime.now())
-    is_host = BooleanField(default=False)
-    profileImgUrl = CharField(null=True, default= 'default.png')
-    carPic = CharField(null=True, default='defaultcar.png')
+    is_host = BooleanField( default=False)
+    profileImgUrl = CharField(max_length=255, null=True, default= 'default.png')
+    carPic = CharField(max_length=255, null=True, default='defcar.png')
     
     class Meta:
         database = DATABASE
         order_by = ('-joined_at',)
         
     @classmethod
-    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl='default.png', carPic='defaultcar.png', is_host=False):
+    def create_user(cls, username, email, password, fullname, phoneNumber, address, profileImgUrl='default.png', carPic='defcar.png', is_host=False):
         try:
             cls.create(
-                username=username,
-                email=email,
-                password=generate_password_hash(password),
+                username = username,
+                email = email,
+                password = generate_password_hash(password),
                 fullname = fullname,
                 phoneNumber = phoneNumber,
                 address = address,
-                is_host= is_host,
-                profileImgUrl=profileImgUrl,
+                is_host = is_host,
+                profileImgUrl = profileImgUrl,
                 carPic = carPic
             )
         except IntegrityError:
