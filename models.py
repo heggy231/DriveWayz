@@ -5,8 +5,8 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from playhouse.db_url import connect
 
-# DATABASE = SqliteDatabase('parkingAPP.db')
-DATABASE = PostgresqlDatabase('parkingapp')
+DATABASE = SqliteDatabase('parkingAPP.db')
+# DATABASE = PostgresqlDatabase('parkingapp1')
 # DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
@@ -18,7 +18,7 @@ class User(UserMixin, Model):
     phoneNumber = CharField(max_length=100)
     address = CharField(max_length=100)
     joined_at = DateTimeField(default=datetime.datetime.now())
-    is_host = BooleanField( default=False)
+    is_host = BooleanField(default=False)
     profileImgUrl = CharField(max_length=255, null=True, default= 'default.png')
     carPic = CharField(max_length=255, null=True, default='defcar.png')
     
