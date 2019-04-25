@@ -13,13 +13,27 @@ Python, Flask, WTForms, Peewee, SQLite3, Bootstrap, Custom CSS
 - Google Maps API
 - Stripe Payment API
 
+### Wireframes of early design ideas
+#### Login page
 ![Screenshot of wireframe](../master/assets/wireframe1.png)
+#### User Pages
 ![Screenshot of wireframe](../master/assets/wireframe2.png)
 ![Screenshot of wireframe](../master/assets/wireframe3.png)
+#### Listings of parking spaces with map
 ![Screenshot of wireframe](../master/assets/wireframe4.png)
 
+### Entitiy Relationship Diagram of database tables
+I had 4 database tables, a User, Parking, Reservations, and Reviews
 ![Screenshot of erd](../master/assets/ERD.jpg)
 
+### Code snippets of code that I am proud of
+Uploading a picutre by defining a save path function outside of a route function
 ![Screenshot of code](../master/assets/code1.png)
 ![Screenshot of code](../master/assets/code2.png)
+User profile page, this is like a hub of all database tables with almost all crud functionality all in one page.
 ![Screenshot of code](../master/assets/code3.png)
+Stripe API code
+
+### Challenges
+
+### Shoutouts
