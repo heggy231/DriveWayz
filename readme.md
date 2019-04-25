@@ -32,8 +32,9 @@ Uploading a picutre by defining a save path function outside of a route function
 ![Screenshot of code](../master/assets/code2.png)
 User profile page, this is like a hub of all database tables with almost all crud functionality all in one page.
 ![Screenshot of code](../master/assets/code3.png)
-Stripe API code
 
 ### Challenges
-
-### Shoutouts
+- Getting multiple form.validate_on_submit in one route
+- Accessing referenced data from one table through another table
+- Setting a default image and uploading a picture to replace it
+- Sending the correct error when double booking a reservation
