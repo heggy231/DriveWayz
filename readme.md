@@ -1,3 +1,5 @@
+1) postGresql steps: https://git.generalassemb.ly/sf-wdi-51/psql-install-intro
+2) heroku steps: https://git.generalassemb.ly/sf-wdi-51/flask-deployment
 # DriveWayz
 
 ### What is DriveWayz?
