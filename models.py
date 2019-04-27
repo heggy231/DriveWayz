@@ -5,8 +5,8 @@ from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 from playhouse.db_url import connect
 
-DATABASE = SqliteDatabase('parkingAPP.db')
-# DATABASE = PostgresqlDatabase('parkingapp1')
+# DATABASE = SqliteDatabase('parkingAPP.db')
+DATABASE = PostgresqlDatabase('parkingapp1')
 # DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
