@@ -3,6 +3,10 @@
 homer@ga.com
 123
 
+resources:
+  github: https://github.com/heggy231/DriveWayz
+  https://alompark.herokuapp.com/
+
 # DriveWayz
 
 ### What is DriveWayz?
